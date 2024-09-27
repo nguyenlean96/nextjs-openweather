@@ -1,0 +1,32 @@
+import { motion } from 'framer-motion';
+import { useWeatherContext } from '@/context/WeatherDataProvider';
+export default function HourlyForecast() {
+  const { hourlyForecastData } = useWeatherContext();
+  return (
+    <div className='relative'>
+      <motion.div className="bg-blue-500/80 backdrop-blur-sm rounded-xl w-full h-fit p-2 text-white mb-3">
+        <div className="w-full p-1 border-b">
+          <span className="text-white">{String(`Hourly forecast`)}</span>
+        </div>
+        <div className='flex items-center justify-evenly overflow-x-auto'>
+          {
+            hourlyForecastData && hourlyForecastData?.list.map((hour: any, index: number) =>
+            (
+              <div key={index} className='flex flex-col items-center justify-center'>
+                <div className='text-white'>{hour.dt_txt.split(' ')[1].slice(0, 5)}</div>
+                <div className='flex items-center justify-center'>
+                  <img src={`http://openweathermap.org/img/wn/${hour.weather[0].icon}.png`} alt={hour.weather[0].description} className='w-12 h-12' />
+                </div>
+                <div className='text-white'>{Math.round(hour.main.temp).toFixed(0)}°C</div>
+                <div className='text-white'>{hour.weather[0].description}</div>
+              </div>
+            )
+            )}
+        </div>
+        <div className=''></div>
+        <div className=''></div>
+        <div className=''></div>
+      </motion.div>
+    </div>
+  )
+}
