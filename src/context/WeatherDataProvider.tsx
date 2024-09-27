@@ -134,27 +134,21 @@ export default function WeatherProvider({ children }: { children: any }) {
 		setIsACityFound(false);
 		setIsCityLoading(true);
 		setIsForecastLoading(true);
-		const setEntryCity = setInterval(() => {
-			setCity((prev) => {
-				if (prev.length < foundEntry.length) {
-					return foundEntry.slice(0, prev.length + 1);
-				} else {
-					setIsCityLoading(false);
-					setTimeout(async () => {
-						setIsACityFound(true);
-						setIsForecastLoading(false);
-						await getCityBackground();
-						clearInterval(setEntryCity);
-					}, 600);
-					return prev;
-				}
-			});
-		}, 500);
+		setCity((prev: string) => foundEntry);
 
+		const updateToggles = new Promise((resolve: (value?: any) => void) => {
+			setIsCityLoading(false);
+			setIsACityFound(true);
+			setIsForecastLoading(false);
+			resolve();
+		});
 
 		Promise.all([
+			updateToggles,
 			getData(),
 		]);
+
+		setTimeout(() => getCityBackground(), 2000);
 	}
 
 	async function getCurrentWeather(init = false) {
@@ -202,8 +196,8 @@ export default function WeatherProvider({ children }: { children: any }) {
 		setCurrentWeather(null);
 		setForecastData(null);
 		Promise.all([
-			getCurrentWeather(true), 
-			getForecast(true), 
+			getCurrentWeather(true),
+			getForecast(true),
 			getCityBackground(),
 		]);
 
@@ -221,6 +215,20 @@ export default function WeatherProvider({ children }: { children: any }) {
 
 	useEffect(() => {
 		cityInitHandler();
+
+		return () => {
+			setCity('');
+			setPreviousCity('');
+			setCurrentWeather(null);
+			setForecastData(null);
+			setCurrentWeatherError('');
+			setForecastError('');
+			setIsCityLoading(false);
+			setIsForecastLoading(false);
+			setIsACityFound(false);
+			setCityBackgroundUrl(null);
+			setIsCityBackgroundLoading(false);
+		};
 	}, []);
 
 	const filteredCities =
@@ -228,10 +236,10 @@ export default function WeatherProvider({ children }: { children: any }) {
 			? cities.filter((keyword: string, index: number) =>
 				keyword.toLowerCase().includes(city.toLowerCase())
 			)
-			// .filter(
+				// .filter(
 				// 	(city, index, self) => self.findIndex((t) => t.name === city.name) === index
 				// )
-		    .sort() // JavaScript's default sort method compares strings lexicographically
+				.sort() // JavaScript's default sort method compares strings lexicographically
 			: cities;
 
 	return (
