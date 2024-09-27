@@ -1,7 +1,9 @@
-import Main from './Main';
-import SearchPanel from './SearchPanel';
+import Main from './main';
+import SearchPanel from './search-panel';
+import WeatherForecast from './weather-forecast';
 
 export {
   Main,
-  SearchPanel
+  SearchPanel,
+  WeatherForecast
 };

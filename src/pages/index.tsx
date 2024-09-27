@@ -9,7 +9,12 @@ export default function Home({ width, height, props }: { width: number; height: 
           width={width}
           height={height}
         />
-        <Main />
+        <div className="col-span-3">
+          <Main
+            width={width}
+            height={height}
+          />
+        </div>
       </div>
     </WeatherProvider>
   );
