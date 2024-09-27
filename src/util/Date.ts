@@ -16,7 +16,7 @@ function getMonth(time: any, numberType: boolean = false): string {
 		'Dec',
 	];
 	// prettier-ignore
-	return numberType ? ((date.getMonth() < 10 ? '0' : '') + (date.getMonth() + 1)) : months[date.getMonth()];
+	return numberType ? (((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1)) : months[date.getMonth()];
 }
 
 // Get day of week as a string
