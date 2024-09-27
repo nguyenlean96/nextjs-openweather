@@ -43,7 +43,7 @@ export default function Main() {
         )
       }
       {
-        !isCityBackgroundLoading && (
+        !isCityBackgroundLoading && cityBackgroundUrl && (
           <>
             <div className="z-0 absolute top-0 left-0 w-full h-screen bg-white/20 backdrop-blur-sm"></div>
             <div className="-z-10 absolute top-0 left-0 w-full h-screen">
