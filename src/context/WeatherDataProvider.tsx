@@ -58,12 +58,31 @@ export const WeatherContext = createContext(
 		isCityLoading: boolean;
 		isForecastLoading: boolean;
 		currentWeather: any;
-		forecastData: any;
+		// forecastData: any;
+		dailyForecastData: any;
+		hourlyForecastData: any;
 		currentWeatherError: string;
 		forecastError: string;
 		getData: any;
 	}
 );
+
+type IForecastDateTime = {
+	dt: number;
+	dt_txt: string;
+	main: any;
+	pop: number;
+	sys: {
+		pod: string;
+	};
+	visibility: number;
+	weather: Array<any>;
+	wind: {
+		speed: number;
+		deg: number;
+		gust?: number;
+	};
+}
 
 export default function WeatherProvider({ children }: { children: any }) {
 	const { cities, currentWeatherApi, forecastWeatherApi } = useOpenWeather();
@@ -71,13 +90,27 @@ export default function WeatherProvider({ children }: { children: any }) {
 
 	const [city, setCity] = useState('');
 	const [previousCity, setPreviousCity] = useState('');
-	const [isCityLoading, setIsCityLoading] = useState(false);
-	const [isForecastLoading, setIsForecastLoading] = useState(false);
+	const [isCityLoading, setIsCityLoading] = useState(true);
+	const [isForecastLoading, setIsForecastLoading] = useState(true);
 	const [isACityFound, setIsACityFound] = useState(false);
+	const [currentWeather, setCurrentWeather] = useState<any>(null);
+	const [forecastData, setForecastData] = useState<{
+		list: Array<IForecastDateTime>;
+		message?: number;
+		cnt?: number;
+		cod?: string;
+		city?: any;
+	} | null>(null);
+	const [dailyForecastData, setDailyForecastData] = useState<{
+		list: Array<IForecastDateTime>;
+		message?: number;
+		cnt?: number;
+		cod?: string;
+		city?: any;
+	} | null>(null);
+	const [hourlyForecastData, setHourlyForecastData] = useState<any | null>(null);
 	const [currentWeatherError, setCurrentWeatherError] = useState('');
 	const [forecastError, setForecastError] = useState('');
-	const [currentWeather, setCurrentWeather] = useState(null);
-	const [forecastData, setForecastData] = useState(null);
 	const [cityBackgroundUrl, setCityBackgroundUrl] = useState(null);
 	const [isCityBackgroundLoading, setIsCityBackgroundLoading] = useState(false);
 	const foundEntry = samples[Math.floor(Math.random() * samples.length)];
@@ -109,46 +142,66 @@ export default function WeatherProvider({ children }: { children: any }) {
 	};
 
 	const getUniqueDays = (oridat: {
-		list: Array<{ dt: string }>;
+		list: Array<any>;
+		message?: number;
+		cnt?: number;
+		cod?: string;
+		city?: any;
 	}) => {
-		let cwday = -1;
+		let loadFirstDayData = -1;
+		let hourlyData: Array<any> = [];
+		let cwday: number = -1;
 		let uniqueDays: Array<any> = [];
-		oridat.list.forEach((day: { dt: string }) => {
-			let wday = new Date(parseInt(day.dt) * 1000).getDay();
-			if (wday !== cwday) {
-				cwday = wday;
-				uniqueDays.push(day);
-				uniqueDays[uniqueDays.length - 1].inner = [];
-				uniqueDays[uniqueDays.length - 1].inner.push(day);
-			} else {
-				uniqueDays[uniqueDays.length - 1].inner.push(day);
-			}
+		oridat.list
+			.sort((a: { dt: string }, b: { dt: string }) => parseInt(a.dt) - parseInt(b.dt))
+			.forEach((day: { dt: string }) => {
+				let wday = new Date(parseInt(day.dt) * 1000).getDay();
+				if (wday !== cwday) {
+					if (cwday === -1) {
+						loadFirstDayData = wday;
+					}
+					cwday = wday;
+					uniqueDays.push(day);
+				}
+				if (loadFirstDayData !== -1 && wday === loadFirstDayData) {
+					hourlyData.push(day);
+				}
+			});
+
+		let filteredHours: any = new Object({
+			...oridat,
 		});
+		filteredHours.list = hourlyData;
+
 		oridat.list = uniqueDays;
-		let filteredDays = oridat;
-		return filteredDays;
+		let filteredDays: {
+			list: Array<any>;
+			message?: number;
+			cnt?: number;
+			cod?: string;
+			city?: any;
+		} = oridat;
+
+		return [filteredHours, filteredDays];
 	};
 
 	async function cityInitHandler() {
-		setPreviousCity((prev) => foundEntry);
-		setIsACityFound(false);
-		setIsCityLoading(true);
-		setIsForecastLoading(true);
-		setCity((prev: string) => foundEntry);
+		try {
+			setIsCityLoading(true);
+			setIsForecastLoading(true);
+			setIsACityFound(false);
+			if (foundEntry) {
+				// Update state synchronously, no need to return a new promise
+				setPreviousCity((prev: string) => foundEntry);
+				setCity((prev: string) => foundEntry);
 
-		const updateToggles = new Promise((resolve: (value?: any) => void) => {
-			setIsCityLoading(false);
-			setIsACityFound(true);
-			setIsForecastLoading(false);
-			resolve();
-		});
-
-		Promise.all([
-			updateToggles,
-			getData(),
-		]);
-
-		setTimeout(() => getCityBackground(), 2000);
+				// Fetch data and background simultaneously
+				await getData()
+					.then(() => getCityBackground());
+			}
+		} catch (err) {
+			console.log("Error while initializing city:", err);
+		}
 	}
 
 	async function getCurrentWeather(init = false) {
@@ -183,9 +236,17 @@ export default function WeatherProvider({ children }: { children: any }) {
 		try {
 			let temp = await forecastWeatherApi(city || foundEntry);
 
-			setForecastData(
-				temp.list ? (temp.list.length > 6 ? { ...getUniqueDays(temp) } : temp) : null
-			);
+			if (temp.list) {
+				if (temp.list.length > 6) {
+					const [filteredHours, filteredDays] = getUniqueDays(temp);
+					// setForecastData((prev: any) => ({ ...filteredDays }));
+					setDailyForecastData((prev: any) => filteredDays);
+					setHourlyForecastData((prev: any) => filteredHours);
+				} else {
+					// setForecastData((prev: any) => temp);
+					setDailyForecastData((prev: any) => temp);
+				}
+			}
 			if (!init) setIsForecastLoading(false);
 		} catch (err) {
 			console.log(err);
@@ -199,36 +260,17 @@ export default function WeatherProvider({ children }: { children: any }) {
 			getCurrentWeather(true),
 			getForecast(true),
 			getCityBackground(),
-		]);
-
-		const checkDataRetrieval = await setInterval(() => {
-			if (currentWeather && forecastData) {
-				setTimeout(() => {
-					setIsCityLoading(false);
-					setIsForecastLoading(false);
-					setIsACityFound(true);
-				}, 1800);
-			}
-		}, 2000);
-		return () => clearInterval(checkDataRetrieval);
+		]).then(() => {
+			setTimeout(() => {
+				setIsCityLoading(false);
+				setIsForecastLoading(false);
+				setIsACityFound(true);
+			}, 1800);
+		});
 	};
 
 	useEffect(() => {
 		cityInitHandler();
-
-		return () => {
-			setCity('');
-			setPreviousCity('');
-			setCurrentWeather(null);
-			setForecastData(null);
-			setCurrentWeatherError('');
-			setForecastError('');
-			setIsCityLoading(false);
-			setIsForecastLoading(false);
-			setIsACityFound(false);
-			setCityBackgroundUrl(null);
-			setIsCityBackgroundLoading(false);
-		};
 	}, []);
 
 	const filteredCities =
@@ -256,7 +298,9 @@ export default function WeatherProvider({ children }: { children: any }) {
 				isForecastLoading,
 				isCityBackgroundLoading,
 				currentWeather,
-				forecastData,
+				// forecastData,
+				dailyForecastData,
+				hourlyForecastData,
 				currentWeatherError,
 				forecastError,
 				getData,
