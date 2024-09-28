@@ -207,12 +207,12 @@ export default function Main({ width, height, props }: { width: number; height: 
                           <div className="text-2xl text-end lg:text-start"><span className="font-semibold text-white/60">Sun rises</span> <span className="text-2xl text-white/80 ">{getTime(currentWeather?.sys.sunrise)}</span></div>
                         </div>
                         <div className="absolute left-0 top-2/3 w-full border"></div>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="absolute top-[1rem] -left-1/2 xl:left-0 z-0 opacity-60">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="absolute top-[1rem] -left-1/2 xl:-left-[20%] xl:right-0 z-0 opacity-60">
                           <path d="M 260 110 Q 187.5 6, 125 93 T 6 80" stroke="#eee" strokeWidth="3" strokeLinecap="round"
                             fill="transparent" />
                         </svg>
                         <motion.div
-                          className="absolute top-[1rem] -left-1/2 xl:left-0"
+                          className="absolute top-[1rem] -left-1/2 xl:-left-[20%]"
                           style={{
                             zIndex: 50,
                             offsetPath: 'path("M 260 110 Q 187.5 6, 125 93 T 6 80")',
@@ -251,11 +251,11 @@ export default function Main({ width, height, props }: { width: number; height: 
                           <div className="text-2xl text-end lg:text-start"><span className="font-semibold text-white/60">Sun sets</span> <span className="text-2xl text-white/80 ">{getTime(currentWeather?.sys.sunset)}</span></div>
                         </div>
                         <div className="absolute left-0 top-2/3 w-full border"></div>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="absolute top-[2rem] -left-1/2 xl:left-0 z-0 opacity-60">
-                          <path d="M 6 90 Q 58.5 6, 135 75 T 270 60" stroke="#eee" strokeWidth="5" strokeLinecap="round" fill="transparent" />
+                        <svg xmlns="http://www.w3.org/2000/svg" className="absolute top-[2rem] -left-1/2 xl:-left-[20%] xl:right-0 z-0 opacity-60">
+                          <path d="M 6 90 Q 58.5 6, 135 75 T 270 60" stroke="#eee" strokeWidth="3" strokeLinecap="round" fill="transparent" />
                         </svg>
                         <motion.div
-                          className="absolute top-[2rem] -left-1/2 xl:left-0 z-50"
+                          className="absolute top-[2rem] -left-1/2 xl:-left-[20%] z-50"
                           style={{
                             zIndex: 50,
                             offsetPath: 'path("M 6 90 Q 58.5 6, 135 75 T 270 60")',
