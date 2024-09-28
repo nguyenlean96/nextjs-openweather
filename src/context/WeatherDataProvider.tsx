@@ -63,6 +63,8 @@ export const WeatherContext = createContext(
 		setIsCityLoading: any;
 		isForecastLoading: boolean;
 		setIsForecastLoading: any;
+		isFogEffectForcedOn: boolean;
+		setIsFogEffectForcedOn: any;
 		currentWeather: any;
 		setCurrentWeather: any;
 		// forecastData: any;
@@ -75,6 +77,7 @@ export const WeatherContext = createContext(
 		forecastError: string;
 		setForecastError: any;
 		getData: any;
+		getCityBackground: any;
 	}
 );
 
@@ -124,6 +127,7 @@ export default function WeatherProvider({ children }: { children: any }) {
 	const [forecastError, setForecastError] = useState('');
 	const [cityBackgroundUrl, setCityBackgroundUrl] = useState(null);
 	const [isCityBackgroundLoading, setIsCityBackgroundLoading] = useState(false);
+	const [isFogEffectForcedOn, setIsFogEffectForcedOn] = useState<boolean>(false);
 	const foundEntry = samples[Math.floor(Math.random() * samples.length)];
 
 	const getCityBackground = async () => {
@@ -309,6 +313,8 @@ export default function WeatherProvider({ children }: { children: any }) {
 				setIsForecastLoading,
 				isCityBackgroundLoading,
 				setIsCityBackgroundLoading,
+				isFogEffectForcedOn,
+				setIsFogEffectForcedOn,
 				currentWeather,
 				setCurrentWeather,
 				dailyForecastData,
@@ -320,6 +326,7 @@ export default function WeatherProvider({ children }: { children: any }) {
 				forecastError,
 				setForecastError,
 				getData,
+				getCityBackground,
 			}}
 		>
 			{children}
