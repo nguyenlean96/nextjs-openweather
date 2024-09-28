@@ -6,11 +6,10 @@ import { TheSun, TheMoon } from "@/components/celestial";
 import { FogBackgroundEffect } from "@/components/fog-effect";
 
 export default function Main({ width, height, props }: { width: number; height: number; props?: any }) {
-  const { city, currentWeather, isCityLoading, isACityFound } = useWeatherContext();
-  const { cityBackgroundUrl, isCityBackgroundLoading } = useWeatherContext();
+  const { city, currentWeather, cityBackgroundUrl, isCityBackgroundLoading, isFogEffectForcedOn } = useWeatherContext();
 
   return (
-    <div className="relative">
+    <div className="relative w-full h-full">
       {
         currentWeather && (String(currentWeather?.weather[0].icon).startsWith('01d') || String(currentWeather?.weather[0].icon).startsWith('02d') || String(currentWeather?.weather[0].icon).startsWith('03d') || String(currentWeather?.weather[0].icon).startsWith('04d')) && (
           <div className="z-10 absolute top-0 left-0 w-full h-screen"
@@ -46,28 +45,27 @@ export default function Main({ width, height, props }: { width: number; height: 
         )
       }
       {
-        // currentWeather && (String(currentWeather?.weather[0].icon).includes('50'))
-        true
+        currentWeather && (String(currentWeather?.weather[0].icon).includes('50') || isFogEffectForcedOn) 
         &&
-        <div className="fog absolute top-0 left-0 w-full z-50">
+        <div className="fog z-30">
           <FogBackgroundEffect />
         </div>
       }
-      <div className="absolute top-0 left-0 right-0 w-full h-screen overflow-y-scroll z-20 p-2 px-10 pt-16">
+      <div className={"absolute top-0 left-0 right-0 w-full h-screen overflow-y-scroll z-20 p-2 px-10 pt-16 " + ((String(currentWeather?.weather[0].icon).includes('50') || isFogEffectForcedOn) ? 'pb-64' : '')}>
         {/* CITY NAME */}
-        <div>
+        <div className="bg-gray-50/60 backdrop-blur-sm p-0.5 px-3 rounded w-fit mb-3">
           <motion.svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
             fill="none" strokeWidth="1.5" stroke="currentColor" viewBox="0 0 24 24"
-            className="w-6 h-6 inline-block mr-0.5"
+            className="w-5 h-5 inline-block mr-0.5"
             // Make the icon bounce
-            initial={{ y: -10 }}
-            animate={{ y: [-6, -10, -6] }}
+            initial={{ y: -18 }}
+            animate={{ y: [-4, -8, -4] }}
             transition={{ duration: 1.5 }}
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"></path>
           </motion.svg>
-          <h3 className="text-xl xl:text-2xl inline-block">{String(currentWeather?.name)}</h3>
+          <h3 className="text-base xl:text-lg inline-block text-gray-600">{String(currentWeather?.name)}</h3>
         </div>
 
         <div className="p-3 rounded-lg bg-gradient-to-r from-gray-50/40 via-gray-100/60 to-gray-200 backdrop-blur-sm mb-3 grid grid-cols-1 xl:grid-cols-2">
@@ -282,7 +280,7 @@ export default function Main({ width, height, props }: { width: number; height: 
                 }
               </motion.div>
             </div>
-            <WindSpeedPanel 
+            <WindSpeedPanel
               width={width}
               height={height}
             />

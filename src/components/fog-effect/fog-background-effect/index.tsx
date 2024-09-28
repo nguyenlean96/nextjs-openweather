@@ -1,6 +1,4 @@
 import Image from "next/image";
-
-import React from 'react'
 import Fog1 from '../graphic/fog1.png';
 import Fog2 from '../graphic/fog2.png';
 import Fog3 from '../graphic/fog3.png';
