@@ -101,14 +101,12 @@ export default function WindSpeedPanel({ width, height }: { width: number; heigh
             </div>
             <div className="absolute top-0 right-0 w-full h-full z-20">
               <motion.div className="flex justify-center items-center transition-all ease-in-out duration-1000 delay-1000"
-                initial={{ rotate: 0 }}
-                whileInView={{ rotate: currentWeather?.wind?.deg }}
-                exit={{ rotate: 0 }}
-                transition={{ 
-                  duration: 1,
-                  type: 'spring',
-                  stiffness: 300,
-                }}
+                initial={{ 
+                  transform: 'rotate(0deg)',
+                 }}
+                 whileInView={{
+                    transform: `rotate(${currentWeather ? currentWeather?.wind?.deg : 0}deg)`,
+                 }}
               >
                 <svg className="scale-75 -translate-y-2"
                   fill="none"
