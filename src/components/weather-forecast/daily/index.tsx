@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { getMonth, getDayOfWeek, getDateString } from '@/util';
+import { getDayOfWeek } from '@/util';
 import { useWeatherContext } from '@/context/WeatherDataProvider';
 
 export default function DailyForecast({ width, height, props }: { width: number; height: number; props?: any }) {
@@ -57,9 +57,9 @@ export default function DailyForecast({ width, height, props }: { width: number;
           transition={{ duration: 0.5 }}
         >
           <div className="w-full p-1 border-b">
-            <span className="text-white">{String(`Next 6-day forecast`)}</span>
+            <span className="text-gray-50/80 font-semibold">{String(`Next 6-day forecast`)}</span>
           </div>
-          <div className='w-full px-4'>
+          <div className='w-full'>
             {dailyForecastData?.list
               .sort((a: any, b: any) => parseInt(a.dt) - parseInt(b.dt))
               .map((day: any, index: number) => (
@@ -99,32 +99,14 @@ const ForecastDayDisplay = (props: any) => {
       if (indicatorOffset + tempIndicator.current?.offsetWidth > tempRangeBar.current?.offsetWidth) {
         indicatorOffset = (indicatorOffset - tempIndicator.current?.offsetWidth) * .99;
       }
-      setTempPos(
-        (prev) =>
-          `${
-          // tempResolve(Math.round(day.main.temp)) *
-          //   (width > 1280 ? 12 : width > 1024 ? 10 : 8) <
-          //   0
-          //   ? 0
-          //   : tempResolve(Math.round(day.main.temp)) *
-          //     (width > 1280 ? 12 : width > 1024 ? 10 : 8) >
-          //     tempResolve(Math.round(day.main.temp_max)) *
-          //     (width > 1280 ? 12 : width > 1024 ? 10 : 8)
-          //     ? tempResolve(Math.round(day.main.temp_max)) *
-          //     (width > 1280 ? 12 : width > 1024 ? 10 : 8)
-          //     : tempResolve(Math.round(day.main.temp)) *
-          //     (width > 1280 ? 12 : width > 1024 ? 10 : 8)
-          indicatorOffset
-
-          }px`
-      );
+      setTempPos((prev) => `${indicatorOffset}px`);
     }
   }, [day.main.temp, day.main.temp_max, width, height]);
 
   return (
-    <div className='grid grid-cols-11 w-full'>
+    <div className='grid grid-cols-11 w-full pr-4'>
       <div className='text-gray-50 col-span-2'>
-        <div className={'text-xl ' + (position === 0 ? 'font-semibold' : '')}>{getDayOfWeek(day.dt)}</div>
+        <div className={'text-base ' + (position === 0 ? 'font-semibold' : '')}>{getDayOfWeek(day.dt)}</div>
       </div>
       <div className='col-span-2 flex items-center justify-center'>
         {
@@ -135,23 +117,24 @@ const ForecastDayDisplay = (props: any) => {
       </div>
       <div className='col-span-7'>
         <div className='grid grid-cols-12 w-full gap-x-2'>
-          <div className='text-blue-200 xl:text-xl text-center'>
+          <div className='text-blue-200 text-base xl:text-lg text-center font-semibold'>
             {Math.round(day.main.temp_min)}
             &deg;
           </div>
           <div className='col-span-10 w-full flex items-center justify-center px-2'>
-            <div className='flex items-center border border-[#fff] bg-gradient-to-r from-blue-600 via-green-500 to-orange-600 h-2 lg:h-2.5 xl:h-3 rounded-full animate-gradient-x w-full mb-2 translate-y-1'
+            <div className='flex items-center border border-[#fff] bg-gradient-to-r from-blue-600 via-green-500 to-orange-600 h-2 lg:h-2 xl:h-2.5 rounded-full animate-gradient-x w-full mb-2 translate-y-1'
               ref={tempRangeBar}
             >
               <div ref={tempIndicator}
-                className='rounded-full border border-[#333] bg-[#fff] lg:w-2 xl:w-[0.6rem] h-full z-10 drop-shadow-sm'
+                className='rounded-full border border-[#333] bg-[#fff] h-full z-10 drop-shadow-sm'
                 style={{
+                  width: (tempRangeBar.current ? (tempRangeBar.current?.offsetHeight * .8) : '0.6rem') ?? '0.6rem',
                   marginLeft: tempPos,
                 }}
               ></div>
             </div>
           </div>
-          <div className='text-white xl:text-xl text-center'>
+          <div className='text-white text-base xl:text-lg text-start font-semibold'>
             {Math.round(day.main.temp_max)}
             &deg;
           </div>

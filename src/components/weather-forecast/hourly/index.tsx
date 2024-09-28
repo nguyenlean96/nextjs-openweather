@@ -8,24 +8,20 @@ export default function HourlyForecast() {
         <div className="w-full p-1 border-b">
           <span className="text-white">{String(`Hourly forecast`)}</span>
         </div>
-        <div className='flex items-center justify-evenly overflow-x-auto'>
+        <div className='flex items-center justify-evenly overflow-x-auto pb-3'>
           {
             hourlyForecastData && hourlyForecastData?.list.map((hour: any, index: number) =>
             (
-              <div key={index} className='flex flex-col items-center justify-center'>
-                <div className='text-white'>{hour.dt_txt.split(' ')[1].slice(0, 5)}</div>
+              <div key={index} className='flex flex-col items-center justify-center text-white min-w-[5rem] py-2'>
+                <div className='text-sm'>{hour.dt_txt.split(' ')[1].slice(0, 5)}</div>
                 <div className='flex items-center justify-center'>
-                  <img src={`http://openweathermap.org/img/wn/${hour.weather[0].icon}.png`} alt={hour.weather[0].description} className='w-12 h-12' />
+                  <img src={`http://openweathermap.org/img/wn/${hour.weather[0].icon}.png`} alt={hour.weather[0].description} className='w-14 h-14 opacity-90' />
                 </div>
-                <div className='text-white'>{Math.round(hour.main.temp).toFixed(0)}°C</div>
-                <div className='text-white'>{hour.weather[0].description}</div>
+                <div>{Math.round(hour.main.temp).toFixed(0)}&deg;</div>
               </div>
             )
             )}
         </div>
-        <div className=''></div>
-        <div className=''></div>
-        <div className=''></div>
       </motion.div>
     </div>
   )

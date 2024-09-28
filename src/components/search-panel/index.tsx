@@ -114,7 +114,7 @@ export default function SearchPanel({ width, height }: { width: number; height: 
         <div className="grow overflow-y-auto bg-white ring-1 ring-black/20 rounded-lg">
           <ul className="h-full">
             {items.map((city, index) => (
-              <li key={index} className={"px-3.5 p-2 cursor-pointer hover:bg-gray-100 transition-all ease-in-out border-dotted " + ((index !== items.length - 1) && 'border-b')} onClick={() => {
+              <li key={index} className={"px-3.5 p-2 cursor-pointer hover:bg-gray-100 transition-all ease-in-out border-dotted text-sm " + ((index !== items.length - 1) && 'border-b')} onClick={() => {
                 setTypingCity(city);
                 triggerUpdateCity();
                 updateDispCityDebounce(city);
