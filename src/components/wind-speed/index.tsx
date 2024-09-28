@@ -17,7 +17,6 @@ export default function WindSpeedPanel({ width, height }: { width: number; heigh
       setWdcTranslateX((prev: number) => (informationSideRect.width / 2 - windDirectionContainerRect.width / 2));
     }
   }, [currentWeather, width, height]);
-  
   return (
     <motion.div className="bg-blue-500/80 backdrop-blur-sm rounded-xl w-full mb-3"
       ref={containerRef}
@@ -70,10 +69,7 @@ export default function WindSpeedPanel({ width, height }: { width: number; heigh
             </div>
           </motion.div>
         </div>
-        <motion.div className="relative h-[10rem] w-[10rem]"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-        >
+        <div className="relative h-[10rem] w-[10rem]">
           <div className="w-full h-full"
             ref={windDirectionContainerRef}
             style={{
@@ -104,9 +100,14 @@ export default function WindSpeedPanel({ width, height }: { width: number; heigh
               <p className="text-center text-white text-sm">km/h</p>
             </div>
             <div className="absolute top-0 right-0 w-full h-full z-20">
-              <div className="flex justify-center items-center transition-all ease-in-out duration-1000 delay-1000"
-                style={{
-                  transform: `rotate(${currentWeather?.wind?.deg}deg)`
+              <motion.div className="flex justify-center items-center transition-all ease-in-out duration-1000 delay-1000"
+                initial={{ rotate: 0 }}
+                whileInView={{ rotate: currentWeather?.wind?.deg }}
+                exit={{ rotate: 0 }}
+                transition={{ 
+                  duration: 1,
+                  type: 'spring',
+                  stiffness: 300,
                 }}
               >
                 <svg className="scale-75 -translate-y-2"
@@ -118,10 +119,10 @@ export default function WindSpeedPanel({ width, height }: { width: number; heigh
                   aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.25 5.75 12 3m0 0 3 2.75M12 3v20"></path>
                 </svg>
-              </div>
+              </motion.div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </motion.div>
   )
