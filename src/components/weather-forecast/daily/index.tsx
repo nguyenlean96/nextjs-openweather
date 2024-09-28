@@ -128,7 +128,7 @@ const ForecastDayDisplay = (props: any) => {
               <div ref={tempIndicator}
                 className='rounded-full border border-[#333] bg-[#fff] h-full z-10 drop-shadow-sm'
                 style={{
-                  width: (tempRangeBar.current ? (tempRangeBar.current?.offsetHeight * .8) : '0.6rem') ?? '0.6rem',
+                  width: (tempRangeBar.current ? (tempRangeBar.current?.offsetHeight * .8) : '0.6rem'),
                   marginLeft: tempPos,
                 }}
               ></div>
