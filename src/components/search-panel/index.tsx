@@ -96,7 +96,7 @@ export default function SearchPanel({ width, height }: { width: number; height: 
     >
       <div className="bg-gradient-to-br from-slate-500 to-blue-500 w-full h-screen max-h-screen overflow-hidden col-span-1 p-2 flex flex-col">
         <div className="w-full flex items-center sticky top-0 px-2 py-3 rounded">
-          <input title="City" type="text" ref={cityInput} placeholder="Enter a city" className="rounded-l-full w-full leading-5 px-3 p-1.5" value={typingCity}
+          <input title="City" type="text" ref={cityInput} placeholder="Enter a city" className="rounded-l-full w-full leading-5 px-3 p-1.5 dark:text-gray-600" value={typingCity}
             onChange={(e) => {
               e.preventDefault();
               setTypingCity(e.target.value);
@@ -114,7 +114,7 @@ export default function SearchPanel({ width, height }: { width: number; height: 
         <div className="grow overflow-y-auto bg-white ring-1 ring-black/20 rounded-lg">
           <ul className="h-full">
             {items.map((city, index) => (
-              <li key={index} className={"px-3.5 p-2 cursor-pointer hover:bg-gray-100 transition-all ease-in-out border-dotted text-sm " + ((index !== items.length - 1) && 'border-b')} onClick={() => {
+              <li key={index} className={"px-3.5 p-2 cursor-pointer hover:bg-gray-100 transition-all ease-in-out border-dotted text-sm dark:text-gray-600 " + ((index !== items.length - 1) && 'border-b')} onClick={() => {
                 setTypingCity(city);
                 triggerUpdateCity();
                 updateDispCityDebounce(city);
