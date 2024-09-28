@@ -71,13 +71,8 @@ export default function WindSpeedPanel({ width, height }: { width: number; heigh
           </motion.div>
         </div>
         <motion.div className="relative h-[10rem] w-[10rem]"
-          initial={{ opacity: 0, rotate: 60 }}
-          whileInView={{ opacity: 1, rotate: 0 }}
-          transition={{
-            duration: 10,
-            type: 'spring',
-            stiffness: 260,
-          }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
         >
           <div className="w-full h-full"
             ref={windDirectionContainerRef}
