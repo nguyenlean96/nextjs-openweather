@@ -148,7 +148,7 @@ export default function WeatherProvider({ children }: { children: any }) {
 		cod?: string;
 		city?: any;
 	}) => {
-		let loadFirstDayData = -1;
+		let loadFirstDayData = 0;
 		let hourlyData: Array<any> = [];
 		let cwday: number = -1;
 		let uniqueDays: Array<any> = [];
@@ -157,13 +157,11 @@ export default function WeatherProvider({ children }: { children: any }) {
 			.forEach((day: { dt: string }) => {
 				let wday = new Date(parseInt(day.dt) * 1000).getDay();
 				if (wday !== cwday) {
-					if (cwday === -1) {
-						loadFirstDayData = wday;
-					}
+					loadFirstDayData++;
 					cwday = wday;
 					uniqueDays.push(day);
 				}
-				if (loadFirstDayData !== -1 && wday === loadFirstDayData) {
+				if (loadFirstDayData < 4) {
 					hourlyData.push(day);
 				}
 			});
