@@ -49,8 +49,10 @@ export default function SearchPanel({ width, height }: { width: number; height: 
   };
 
   const updateDispCityDebounce = useDebounce((city: string) => {
+    if (inFocus) {
+      setCity((prev: string) => city);
+    }
     setSearchBox((prev: string) => city);
-    setCity((prev: string) => city);
     setFilteredCities((prev: string[]) => city.length > 0 ? cities.filter((c: string, index: number) =>
       String(c).toLowerCase().includes(String(city).toLowerCase())
     ) : (typingCity.length > 0
@@ -90,6 +92,16 @@ export default function SearchPanel({ width, height }: { width: number; height: 
       return () => observer.disconnect();
     }
   }, [filteredCities.length, hasMore]);
+
+  useEffect(() => {
+    // Check if the cityInput.current is in focus
+    if (cityInput.current) {
+      if (!inFocus) {
+        setTypingCity(city);
+        updateDispCityDebounce(city);
+      }
+    }
+  }, [city]);
   return (
     <div
       className={`${geistSans.variable} ${geistMono.variable} font-[family-name:var(--font-geist-sans)] lg:grid lg:grid-cols-1`}
