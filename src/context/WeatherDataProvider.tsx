@@ -47,22 +47,33 @@ const samples = [
 
 export const WeatherContext = createContext(
 	{} as {
-		filteredCities: string[];
 		cities: string[];
+		filteredCities: string[];
 		city: string;
 		setCity: any;
 		previousCity: string;
+		setPreviousCity: any;
 		cityBackgroundUrl: string | null;
+		setCityBackgroundUrl: any;
 		isCityBackgroundLoading: boolean;
+		setIsCityBackgroundLoading: any;
 		isACityFound: boolean;
+		setIsACityFound: any;
 		isCityLoading: boolean;
+		setIsCityLoading: any;
 		isForecastLoading: boolean;
+		setIsForecastLoading: any;
 		currentWeather: any;
+		setCurrentWeather: any;
 		// forecastData: any;
 		dailyForecastData: any;
+		setDailyForecastData: any;
 		hourlyForecastData: any;
+		setHourlyForecastData: any;
 		currentWeatherError: string;
+		setCurrentWeatherError: any;
 		forecastError: string;
+		setForecastError: any;
 		getData: any;
 	}
 );
@@ -116,24 +127,20 @@ export default function WeatherProvider({ children }: { children: any }) {
 	const foundEntry = samples[Math.floor(Math.random() * samples.length)];
 
 	const getCityBackground = async () => {
-		if (isACityFound && city && city !== previousCity && currentWeather && forecastData) {
+		if (isACityFound && (city || foundEntry)) {
 			try {
 				setIsCityBackgroundLoading(true);
-				const cityImgs = await getImage(String(city))
+				await getImage(String(city ?? foundEntry))
 					.then((res) => {
 						if (res.results.length > 0) {
 							setCityBackgroundUrl(res?.results[0]?.urls?.full);
+							setIsCityBackgroundLoading(false);
 						} else {
 							setCityBackgroundUrl(null);
 						}
 					})
 					.catch((err) => {
 						console.log(err);
-					})
-					.finally(() => {
-						setTimeout(() => {
-							setIsCityBackgroundLoading(false);
-						}, 3000);
 					});
 			} catch (error) {
 				console.log(error);
@@ -194,8 +201,7 @@ export default function WeatherProvider({ children }: { children: any }) {
 				setCity((prev: string) => foundEntry);
 
 				// Fetch data and background simultaneously
-				await getData()
-					.then(() => getCityBackground());
+				await getData();
 			}
 		} catch (err) {
 			console.log("Error while initializing city:", err);
@@ -253,7 +259,9 @@ export default function WeatherProvider({ children }: { children: any }) {
 
 	const getData = async () => {
 		setCurrentWeather(null);
-		setForecastData(null);
+		setDailyForecastData(null);
+		setHourlyForecastData(null);
+		setCityBackgroundUrl(null);
 		Promise.all([
 			getCurrentWeather(true),
 			getForecast(true),
@@ -285,22 +293,32 @@ export default function WeatherProvider({ children }: { children: any }) {
 	return (
 		<WeatherContext.Provider
 			value={{
-				city,
 				cities,
 				filteredCities,
+				city,
 				setCity,
 				previousCity,
+				setPreviousCity,
 				cityBackgroundUrl,
+				setCityBackgroundUrl,
 				isACityFound,
+				setIsACityFound,
 				isCityLoading,
+				setIsCityLoading,
 				isForecastLoading,
+				setIsForecastLoading,
 				isCityBackgroundLoading,
+				setIsCityBackgroundLoading,
 				currentWeather,
-				// forecastData,
+				setCurrentWeather,
 				dailyForecastData,
+				setDailyForecastData,
 				hourlyForecastData,
+				setHourlyForecastData,
 				currentWeatherError,
+				setCurrentWeatherError,
 				forecastError,
+				setForecastError,
 				getData,
 			}}
 		>
