@@ -31,6 +31,8 @@ export default function DebugPanel({
     setIsForecastLoading,
     isCityBackgroundLoading,
     setIsCityBackgroundLoading,
+    isFogEffectForcedOn,
+    setIsFogEffectForcedOn,
     currentWeather,
     setCurrentWeather,
     dailyForecastData,
@@ -42,9 +44,17 @@ export default function DebugPanel({
     forecastError,
     setForecastError,
     getData,
+    getCityBackground,
   } = useWeatherContext();
   const debugButtonRef = useRef<HTMLButtonElement>(null)
   const [isOpen, setIsOpen] = useState<boolean>(false)
+
+  const handleUpdate = (key: string | number, updatedData: any, property: any, setProperty: (data: any) => void) => {
+    setProperty({
+      ...property,
+      [key]: updatedData
+    });
+  };
 
   return (
     <div className='fixed top-0 right-0 z-50'
@@ -92,156 +102,49 @@ export default function DebugPanel({
                       <div className='p-2'>
                         <input title='City Background Url' className='p-0.5 px-1.5 text-gray-800 border border-gray-200 rounded-lg w-full mb-2'
                           type='text' value={cityBackgroundUrl ?? ''} onChange={(e) => setCityBackgroundUrl(e.target.value)} />
-                        <button type='button' onClick={() => setIsCityBackgroundLoading(true)}
-                          className='p-1 px-2 text-white bg-blue-500 text-sm rounded'
-                        >Load Background</button>
+                        <div>
+                          <button type='button' onClick={() => getCityBackground()}
+                            className='p-1 px-2 text-white bg-blue-500 text-sm rounded ml-2'
+                          >Re-generate</button>
+                        </div>
                       </div>
                     </div>
                   </li>
                   <li className='flex justify-between items-center p-2 border-b'>
-                    <div>{'Is A City Found: ' + isACityFound}</div>
+                    <div>{'A City Found: ' + isACityFound}</div>
                     <Input.Toggler value={isACityFound} onClick={() => setIsACityFound(!isACityFound)} />
                   </li>
                   <li className='flex justify-between items-center p-2 border-b'>
-                    <div>{'Is City Loading: ' + isCityLoading}</div>
+                    <div>{'City Loading: ' + isCityLoading}</div>
                     <Input.Toggler value={isCityLoading} onClick={() => setIsCityLoading(!isCityLoading)} />
                   </li>
                   <li className='flex justify-between items-center p-2 border-b'>
-                    <div>{'Is Forecast Loading: ' + isForecastLoading}</div>
+                    <div>{'Forecast Loading: ' + isForecastLoading}</div>
                     <Input.Toggler value={isForecastLoading} onClick={() => setIsForecastLoading(!isForecastLoading)} />
                   </li>
-                  <li className='flex justify-between items-center p-2'>
-                    <div>{'Is City Background Loading: ' + isCityBackgroundLoading}</div>
+                  <li className='flex justify-between items-center p-2 border-b'>
+                    <div>{'City Background Loading: ' + isCityBackgroundLoading}</div>
                     <Input.Toggler value={isCityBackgroundLoading} onClick={() => setIsCityBackgroundLoading(!isCityBackgroundLoading)} />
+                  </li>
+                  <li className='flex justify-between items-center p-2'>
+                    <div>{'Force Fog Effect On: ' + isFogEffectForcedOn}</div>
+                    <Input.Toggler value={isFogEffectForcedOn} onClick={() => setIsFogEffectForcedOn(!isFogEffectForcedOn)} />
                   </li>
                 </ul>
               </Utils.Accordion>
               <Utils.Accordion title={'Current Weather'}>
                 <div className='relative p-2'>
-                  <ul>
-                    {currentWeather &&
-                      Object.keys(currentWeather).map((key, index) => (
-                        typeof currentWeather[key] === 'object' ? (
-                          <li key={index} className={'p-2 ' + (index !== Object.keys(currentWeather).length - 1 ? 'border-b' : '')}>
-                            <div>{key}</div>
-                            <ul>
-                              {
-                                Object.keys(currentWeather[key]).map((subKey, subIndex) => (
-                                  <li key={subIndex} className={'p-2 ' + (subIndex !== Object.keys(currentWeather[key]).length - 1 ? 'border-b' : '')}>
-                                    <div>{subKey + ': ' + currentWeather[key][subKey]}</div>
-                                    <input title={subKey} className='p-0.5 px-1.5 text-gray-800 border border-gray-200 rounded-lg w-full'
-                                      type='text' value={currentWeather[key][subKey]} onChange={(e) => setCurrentWeather({ ...currentWeather, [key]: { ...currentWeather[key], [subKey]: e.target.value } })} />
-                                  </li>
-                                ))
-                              }
-                            </ul>
-                          </li>
-                        ) : (
-                          <li key={index} className={'p-2 ' + (index !== Object.keys(currentWeather).length - 1 ? 'border-b' : '')}>
-                            <div>{key + ': ' + currentWeather[key]}</div>
-                            <input title={key} className='p-0.5 px-1.5 text-gray-800 border border-gray-200 rounded-lg w-full'
-                              type='text' value={currentWeather[key]} onChange={(e) => setCurrentWeather({ ...currentWeather, [key]: e.target.value })} />
-                          </li>
-                        )
-                      ))
-                    }
-                  </ul>
+                  <RecursiveRenderer data={currentWeather} onUpdate={(key, value) => handleUpdate(key, value, currentWeather, setCurrentWeather)} />
                 </div>
               </Utils.Accordion>
               <Utils.Accordion title={'Daily Forecast'}>
                 <div className='relative p-2'>
-                  <ul>
-                    {dailyForecastData &&
-                      Object.keys(dailyForecastData).map((key, index) => (
-                        typeof dailyForecastData[key] === 'object' ? (
-                          <li key={index} className={'p-2 ' + (index !== Object.keys(dailyForecastData).length - 1 ? 'border-b' : '')}>
-                            <div>{key}</div>
-                            <ul>
-                              {
-                                key === 'list' ? hourlyForecastData[key].map((subKey, subIndex) => (
-                                  <li key={subIndex} className='p-2 border-b'>
-                                    <ul>
-                                      {
-                                        Object.keys(subKey).map((subSubKey, subSubIndex) => (
-                                          <li key={subSubIndex} className='p-2 border-b'>
-                                            <div>{subSubKey + ': ' + subKey[subSubKey]}</div>
-                                            <input title={subSubKey} className='p-0.5 px-1.5 text-gray-800 border border-gray-200 rounded-lg w-full'
-                                              type='text' value={subKey[subSubKey]} onChange={(e) => setHourlyForecastData({ ...hourlyForecastData, [key]: hourlyForecastData[key].map((item, i) => i === subIndex ? { ...item, [subSubKey]: e.target.value } : item) })} />
-                                          </li>
-                                        ))
-                                      }
-                                    </ul>
-                                  </li>
-                                ))
-                                  :
-                                  Object.keys(dailyForecastData[key]).map((subKey, subIndex) => (
-                                    <li key={subIndex} className={'p-2 ' + (subIndex !== Object.keys(dailyForecastData[key]).length - 1 ? 'border-b' : '')}>
-                                      <div>{subKey + ': ' + dailyForecastData[key][subKey]}</div>
-                                      <input title={subKey} className='p-0.5 px-1.5 text-gray-800 border border-gray-200 rounded-lg w-full'
-                                        type='text' value={dailyForecastData[key][subKey]} onChange={(e) => setDailyForecastData({ ...dailyForecastData, [key]: { ...dailyForecastData[key], [subKey]: e.target.value } })} />
-                                    </li>
-                                  ))
-                              }
-                            </ul>
-                          </li>
-                        ) : (
-                          <li key={index} className={'p-2 ' + (index !== Object.keys(dailyForecastData).length - 1 ? 'border-b' : '')}>
-                            <div>{key + ': ' + dailyForecastData[key]}</div>
-                            <input title={key} className='p-0.5 px-1.5 text-gray-800 border border-gray-200 rounded-lg w-full'
-                              type='text' value={dailyForecastData[key]} onChange={(e) => setDailyForecastData({ ...dailyForecastData, [key]: e.target.value })} />
-                          </li>
-                        )
-                      ))
-                    }
-                  </ul>
+                  <RecursiveRenderer data={dailyForecastData} onUpdate={(key, value) => handleUpdate(key, value, dailyForecastData, setDailyForecastData)} />
                 </div>
               </Utils.Accordion>
               <Utils.Accordion title={'Hourly Forecast'}>
                 <div className='relative p-2'>
-                  <ul>
-                    {hourlyForecastData &&
-                      Object.keys(hourlyForecastData).map((key, index) => (
-                        typeof hourlyForecastData[key] === 'object' ? (
-                          <li key={index} className={'p-2 ' + (index !== Object.keys(hourlyForecastData).length - 1 ? 'border-b' : '')}>
-                            <div>{key}</div>
-                            <ul>
-                              {
-                                key === 'list' ? hourlyForecastData[key].map((subKey, subIndex) => (
-                                  <li key={subIndex} className='p-2 border-b'>
-                                    <ul>
-                                      {
-                                        Object.keys(subKey).map((subSubKey, subSubIndex) => (
-                                          <li key={subSubIndex} className='p-2 border-b'>
-                                            <div>{subSubKey + ': ' + subKey[subSubKey]}</div>
-                                            <input title={subSubKey} className='p-0.5 px-1.5 text-gray-800 border border-gray-200 rounded-lg w-full'
-                                              type='text' value={subKey[subSubKey]} onChange={(e) => setHourlyForecastData({ ...hourlyForecastData, [key]: hourlyForecastData[key].map((item, i) => i === subIndex ? { ...item, [subSubKey]: e.target.value } : item) })} />
-                                          </li>
-                                        ))
-                                      }
-                                    </ul>
-                                  </li>
-                                ))
-                                  :
-                                  Object.keys(hourlyForecastData[key]).map((subKey, subIndex) => (
-                                    <li key={subIndex} className={'p-2 ' + (subIndex !== Object.keys(hourlyForecastData[key]).length - 1 ? 'border-b' : '')}>
-                                      <div>{subKey + ': ' + hourlyForecastData[key][subKey]}</div>
-                                      <input title={subKey} className='p-0.5 px-1.5 text-gray-800 border border-gray-200 rounded-lg w-full'
-                                        type='text' value={hourlyForecastData[key][subKey]} onChange={(e) => setHourlyForecastData({ ...hourlyForecastData, [key]: { ...hourlyForecastData[key], [subKey]: e.target.value } })} />
-                                    </li>
-                                  ))
-                              }
-                            </ul>
-                          </li>
-                        ) : (
-                          <li key={index} className={'p-2 ' + (index !== Object.keys(hourlyForecastData).length - 1 ? 'border-b' : '')}>
-                            <div>{key + ': ' + hourlyForecastData[key]}</div>
-                            <input title={key} className='p-0.5 px-1.5 text-gray-800 border border-gray-200 rounded-lg w-full'
-                              type='text' value={hourlyForecastData[key]} onChange={(e) => setHourlyForecastData({ ...hourlyForecastData, [key]: e.target.value })} />
-                          </li>
-                        )
-                      ))
-                    }
-                  </ul>
+                  <RecursiveRenderer data={hourlyForecastData} onUpdate={(key, value) => handleUpdate(key, value, hourlyForecastData, setHourlyForecastData)} />
                 </div>
               </Utils.Accordion>
               <Utils.Accordion title={'Current Weather Error'}>
@@ -273,3 +176,52 @@ export default function DebugPanel({
     </div>
   )
 }
+
+const RecursiveRenderer = ({ data, onUpdate }:
+  {
+    data: any;
+    onUpdate: (key: string, value: any) => void;
+  }
+) => {
+  const handleChange = (key: string | number, value: any, parentKey: string, parentData: any) => {
+    const updatedParentData = {
+      ...parentData,
+      [key]: value
+    };
+    onUpdate(parentKey, updatedParentData);
+  };
+
+  const renderNestedData = (data: any, parentKey = '') => {
+    return (
+      <ul>
+        {Object.keys(data).map((key, index) => {
+          if (typeof data[key] === 'object') {
+            // If the data is an object or array, recurse into it
+            return (
+              <li key={index} className={'p-2 ' + (index !== Object.keys(data).length - 1 ? 'border-b' : '')}>
+                <div>{key}</div>
+                <ul>{renderNestedData(data[key], key)}</ul>
+              </li>
+            );
+          } else {
+            // Otherwise, display the value with an input field
+            return (
+              <li key={index} className={'p-2 ' + (index !== Object.keys(data).length - 1 ? 'border-b' : '')}>
+                <div>{key + ': ' + data[key]}</div>
+                <input
+                  title={key}
+                  className='p-0.5 px-1.5 text-gray-800 border border-gray-200 rounded-lg w-full'
+                  type='text'
+                  value={data[key]}
+                  onChange={(e) => handleChange(key, e.target.value, parentKey, data)}
+                />
+              </li>
+            );
+          }
+        })}
+      </ul>
+    );
+  };
+
+  return <div>{renderNestedData(data)}</div>;
+};
