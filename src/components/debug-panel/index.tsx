@@ -65,10 +65,10 @@ export default function DebugPanel({
       <div className='relative'>
         <div className='absolute top-4 right-0'>
           <button type='button' ref={debugButtonRef}
-            className='text-white bg-blue-500 text-sm rounded-tl-lg -rotate-90 p-1 px-4'
+            className='text-white bg-blue-500 text-sm rounded-tl-lg p-1 px-4 w-[12rem] -rotate-90 translate-y-[4rem] translate-x-[5rem] hover:bg-blue-600 transition-all ease-in-out'
             onClick={() => setIsOpen(!isOpen)}
           >
-            Debug
+            Open Debug Panel
           </button>
         </div>
         <div className={'absolute top-0 right-0 h-screen p-3 transition-all ease-in-out bg-white rounded-l-xl shadow-lg dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 w-96 ' + (isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0')}>
