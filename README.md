@@ -3,6 +3,21 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## This app is currently deployed on Heroku at the following link:
 [React-OpenWeather](https://react-openweather-af84a946646e.herokuapp.com/)
 
+### This app just got new look
+Now weather comes with its effect whether
+
+<img width="2560" alt="Screenshot 2024-09-28 at 8 47 18 PM" src="https://github.com/user-attachments/assets/3c0597f3-db3b-46ac-89b2-e5ccf2496214">
+
+## It's a sunny day
+
+<img width="2558" alt="Screenshot 2024-09-28 at 8 46 50 PM" src="https://github.com/user-attachments/assets/e23e9767-1423-4587-a43a-8dd4e7c78266">
+
+## a rainy day
+
+<img width="2560" alt="Screenshot 2024-09-28 at 8 44 59 PM" src="https://github.com/user-attachments/assets/d14c7c31-4f44-4509-88a5-a1f37e718f7c">
+
+## Or even a foggy one
+
 ## Getting Started
 
 First, run the development server:
