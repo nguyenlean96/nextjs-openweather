@@ -22,7 +22,7 @@ const Drop = ({ increment }: {
   const bottomRandom = Math.floor(Math.random() * -4);
   const animationRandom = Math.floor(Math.random() * 99);
   return (
-    <div
+    <div key={increment}
       className="drop"
       style={{
         left: `${increment}%`,
@@ -53,7 +53,7 @@ const BackDrop = ({ increment }: {
   const bottomRandom = Math.floor(Math.random() * -10);
   const animationRandom = Math.floor(Math.random() * 100);
   return (
-    <div
+    <div key={increment}
       className="drop"
       style={{
         right: `${increment}%`,
