@@ -6,10 +6,10 @@ export default function RainEffect() {
     <div className='absolute top-0 left-0 right-0 bottom-0 z-20 w-full h-full'>
       <div className="rain-container back-row-toggle splat-toggle">
         <div className="rain front-row">
-          {Array.from({ length: 100 }, (_: number, i: number) => <Drop increment={i} />)}
+          {Array.from({ length: 100 }, (_: number, i: number) => <div ><Drop key={i} increment={i} /></div>)}
         </div>
         <div className="rain back-row">
-          {Array.from({ length: 100 }, (_: number, i: number) => <BackDrop increment={i} />)}
+          {Array.from({ length: 100 }, (_: number, i: number) => <div ><BackDrop key={i} increment={i} /></div>)}
         </div>
       </div>
     </div>
@@ -22,7 +22,7 @@ const Drop = ({ increment }: {
   const bottomRandom = Math.floor(Math.random() * -4);
   const animationRandom = Math.floor(Math.random() * 99);
   return (
-    <div key={increment}
+    <div
       className="drop"
       style={{
         left: `${increment}%`,
@@ -53,7 +53,7 @@ const BackDrop = ({ increment }: {
   const bottomRandom = Math.floor(Math.random() * -10);
   const animationRandom = Math.floor(Math.random() * 100);
   return (
-    <div key={increment}
+    <div
       className="drop"
       style={{
         right: `${increment}%`,
