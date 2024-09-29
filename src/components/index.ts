@@ -14,6 +14,13 @@ const Input = {
   Toggler
 };
 
+import { RainEffect, SunFlareEffect, FogBackgroundEffect } from './effects';
+const Effects = {
+  RainEffect,
+  SunFlareEffect,
+  FogBackgroundEffect
+};
+
 export {
   Main,
   SearchPanel,
@@ -23,4 +30,5 @@ export {
   DebugPanel,
   Utils,
   Input,
+  Effects,
 };
