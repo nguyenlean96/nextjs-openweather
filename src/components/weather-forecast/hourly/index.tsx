@@ -1,10 +1,17 @@
 import { motion } from 'framer-motion';
 import { useWeatherContext } from '@/context/WeatherDataProvider';
 export default function HourlyForecast() {
-  const { hourlyForecastData } = useWeatherContext();
-  return (
+  const { isForecastLoading, hourlyForecastData } = useWeatherContext();
+  return (!isForecastLoading &&
     <div className='relative'>
-      <motion.div className="bg-blue-500/80 backdrop-blur-sm rounded-xl w-full h-fit p-2 text-white mb-3">
+      <motion.div className="bg-blue-500/80 backdrop-blur-sm rounded-xl w-full h-fit p-2 text-white mb-3"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ 
+          delay: 0.5,
+          duration: 0.5,
+        }}
+      >
         <div className="w-full p-1 border-b">
           <span className="text-white">{String(`Hourly forecast`)}</span>
         </div>

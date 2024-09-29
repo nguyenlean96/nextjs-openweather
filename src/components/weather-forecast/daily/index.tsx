@@ -63,7 +63,10 @@ export default function DailyForecast({ width, height, props }: { width: number;
         <motion.div className="bg-blue-500/80 backdrop-blur-sm rounded-xl w-full p-2 mb-3 grid gap-2"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ 
+            delay: 1,
+            duration: 0.5,
+          }}
         >
           <div className="w-full p-1 border-b">
             <span className="text-gray-50/80 font-semibold">{String(`Next 6-day forecast`)}</span>
