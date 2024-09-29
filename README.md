@@ -3,7 +3,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ### This app is currently deployed on Heroku at the following link:
 [React-OpenWeather](https://react-openweather-af84a946646e.herokuapp.com/)
 
-### This app just got new look
+# This app just got new look
 Now weather comes with its effect whether
 
 ## It's a sunny day
