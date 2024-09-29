@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## This app is currently deployed on Heroku at the following link:
+### This app is currently deployed on Heroku at the following link:
 [React-OpenWeather](https://react-openweather-af84a946646e.herokuapp.com/)
 
 ### This app just got new look
@@ -14,6 +14,17 @@ Now weather comes with its effect whether
 
 ## or even a foggy one
 <img width="2560" alt="Screenshot 2024-09-28 at 8 44 59 PM" src="https://github.com/user-attachments/assets/d14c7c31-4f44-4509-88a5-a1f37e718f7c">
+
+# There is a debugging panel
+For... debugging purposes
+
+<img width="1316" alt="Screenshot 2024-09-28 at 9 00 17 PM" src="https://github.com/user-attachments/assets/d86bf509-f0b3-42f7-bb09-95aa922064ba">
+
+### All effects can be toggled via this panel
+So there can be all sunny, rainy, and foggy all at once.
+
+### And full control over all data attributes
+
 
 ## Getting Started
 
