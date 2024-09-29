@@ -1,12 +1,20 @@
 import { useWeatherContext } from "@/context/WeatherDataProvider";
 import { motion } from "framer-motion";
 import { getTime } from "@/util";
-import { WindSpeedPanel, DailyForecast, HourlyForecast } from "@/components";
+import { WindSpeedPanel, DailyForecast, HourlyForecast, Effects } from "@/components";
 import { TheSun, TheMoon } from "@/components/celestial";
-import { FogBackgroundEffect } from "@/components/fog-effect";
+import { FogBackgroundEffect } from "@/components/effects/fog-effect";
 
 export default function Main({ width, height, props }: { width: number; height: number; props?: any }) {
-  const { city, currentWeather, cityBackgroundUrl, isCityBackgroundLoading, isFogEffectForcedOn } = useWeatherContext();
+  const {
+    isACityFound,
+    currentWeather,
+    cityBackgroundUrl,
+    isCityBackgroundLoading,
+    isFogEffectForcedOn,
+    isSunFlareEffectForcedOn,
+    isRainEffectForcedOn,
+  } = useWeatherContext();
 
   return (
     <div className="relative w-full h-full">
@@ -35,6 +43,25 @@ export default function Main({ width, height, props }: { width: number; height: 
         )
       }
       {
+        currentWeather &&
+        (
+          String(currentWeather?.weather[0].icon).startsWith('09')
+          || String(currentWeather?.weather[0].icon).startsWith('10')
+          || String(currentWeather?.weather[0].icon).startsWith('11')
+          ||
+          isRainEffectForcedOn
+        ) && (
+          <div className="z-10 absolute top-0 left-0 w-full h-screen"
+            style={{
+              boxShadow: `inset 0 -50px 100px rgba(100, 100, 100, 0.7), 
+                  inset 0 -100px 350px rgba(80, 80, 80, 0.8), 
+                  inset 0 -150px 500px rgba(60, 60, 60, 0.4), 
+                  inset 0 -600px 100px rgba(50, 50, 50, 0.5)`
+            }}
+          ></div>
+        )
+      }
+      {
         !isCityBackgroundLoading && cityBackgroundUrl && (
           <>
             <div className="z-0 absolute top-0 left-0 w-full h-screen bg-white/20 backdrop-blur-sm"></div>
@@ -45,54 +72,83 @@ export default function Main({ width, height, props }: { width: number; height: 
         )
       }
       {
-        currentWeather && (String(currentWeather?.weather[0].icon).includes('50') || isFogEffectForcedOn) 
+        currentWeather &&
+        (
+          String(currentWeather?.weather[0].icon).includes('01d')
+          || String(currentWeather?.weather[0].icon).includes('10d')
+          || isSunFlareEffectForcedOn 
+        )
+        && (
+          <Effects.SunFlareEffect />
+        )
+      }
+      {
+        currentWeather &&
+        (
+          String(currentWeather?.weather[0].icon).startsWith('09')
+          || String(currentWeather?.weather[0].icon).startsWith('10')
+          || String(currentWeather?.weather[0].icon).startsWith('11')
+          || isRainEffectForcedOn
+        ) && (
+          <Effects.RainEffect />
+        )
+      }
+      {
+        currentWeather && (String(currentWeather?.weather[0].icon).includes('50') || isFogEffectForcedOn)
         &&
         <div className="fog z-30">
-          <FogBackgroundEffect />
+          <Effects.FogBackgroundEffect />
         </div>
       }
       <div className={"absolute top-0 left-0 right-0 w-full h-screen overflow-y-scroll z-20 p-2 px-10 pt-16 " + ((String(currentWeather?.weather[0].icon).includes('50') || isFogEffectForcedOn) ? 'pb-64' : '')}>
         {/* CITY NAME */}
-        <div className="bg-gray-50/60 backdrop-blur-sm p-0.5 px-3 rounded w-fit mb-3">
-          <motion.svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
-            fill="none" strokeWidth="1.5" stroke="currentColor" viewBox="0 0 24 24"
-            className="w-5 h-5 inline-block mr-0.5"
-            // Make the icon bounce
-            initial={{ y: -18 }}
-            animate={{ y: [-4, -8, -4] }}
-            transition={{ duration: 1.5 }}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"></path>
-          </motion.svg>
-          <h3 className="text-base xl:text-lg inline-block text-gray-600">{String(currentWeather?.name)}</h3>
-        </div>
+        {
+          isACityFound
+          &&
+          <div className="bg-gray-50/60 backdrop-blur-sm p-0.5 px-3 rounded w-fit mb-3">
+            <motion.svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+              fill="none" strokeWidth="1.5" stroke="currentColor" viewBox="0 0 24 24"
+              className="w-5 h-5 inline-block mr-0.5"
+              // Make the icon bounce
+              initial={{ y: -18 }}
+              animate={{ y: [-4, -8, -4] }}
+              transition={{ duration: 1.5 }}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"></path>
+            </motion.svg>
+            <h3 className="text-base xl:text-lg inline-block text-gray-600">{String(currentWeather?.name)}</h3>
+          </div>
+        }
 
-        <div className="p-3 rounded-lg bg-gradient-to-r from-gray-50/40 via-gray-100/60 to-gray-200 backdrop-blur-sm mb-3 grid grid-cols-1 xl:grid-cols-2">
-          <div className="p-6">
-            {/* CURRENT TEMPERATURE */}
-            <h3 className="text-center xl:text-start text-5xl xl:text-7xl py-6 text-gray-600">{Math.round(currentWeather?.main.temp)}&deg;</h3>
-            {/* WEATHER DESCRIPTION */}
-            <div className='text-gray-600 text-lg xl:text-xl text-center xl:text-start'>
-              {String(currentWeather?.weather[0].description)
-                .split(' ')
-                .map(
-                  (word, index) =>
-                    word.toUpperCase().charAt(0) +
-                    word.slice(1) +
-                    (index < word.length - 1 ? ' ' : '')
-                )}
+        {
+          isACityFound &&
+          <div className="p-3 rounded-lg bg-gradient-to-r from-gray-50/40 via-gray-100/60 to-gray-200 backdrop-blur-sm mb-3 grid grid-cols-1 xl:grid-cols-2">
+            <div className="p-6">
+              {/* CURRENT TEMPERATURE */}
+              <h3 className="text-center xl:text-start text-5xl xl:text-7xl py-6 text-gray-600">{Math.round(currentWeather?.main.temp)}&deg;</h3>
+              {/* WEATHER DESCRIPTION */}
+              <div className='text-gray-600 text-lg xl:text-xl text-center xl:text-start'>
+                {String(currentWeather?.weather[0].description)
+                  .split(' ')
+                  .map(
+                    (word, index) =>
+                      word.toUpperCase().charAt(0) +
+                      word.slice(1) +
+                      (index < word.length - 1 ? ' ' : '')
+                  )}
+              </div>
+            </div>
+            {/* WEATHER ICON */}
+            <div className='flex justify-center xl:justify-end h-full items-center -translate-y-8 xl:-translate-x-8'>
+              <img
+                className='w-24 md:w-32 xl:w-36 h-24 md:h-32 xl:h-36'
+                src={`http://openweathermap.org/img/wn/${currentWeather?.weather[0].icon}@2x.png`}
+                alt='weather icon'
+              />
             </div>
           </div>
-          {/* WEATHER ICON */}
-          <div className='flex justify-center xl:justify-end h-full items-center -translate-y-8 xl:-translate-x-8'>
-            <img
-              className='w-24 md:w-32 xl:w-36 h-24 md:h-32 xl:h-36'
-              src={`http://openweathermap.org/img/wn/${currentWeather?.weather[0].icon}@2x.png`}
-              alt='weather icon'
-            />
-          </div>
-        </div>
+        }
 
         <div className="w-full flex justify-center">
           {
@@ -148,142 +204,154 @@ export default function Main({ width, height, props }: { width: number; height: 
         </div>
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
           <div>
-            <motion.div className="bg-blue-500/80 backdrop-blur-sm rounded-xl w-full h-fit p-2 grid grid-cols-1 xl:grid-cols-3 py-4 text-white mb-3"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}>
-              {/* MAX TEMPERATURE */}
-              <div>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='16'
-                  height='16'
-                  fill='currentColor'
-                  className='bi bi-thermometer-high inline-block'
-                  viewBox='0 0 16 16'
-                >
-                  <path d='M9.5 12.5a1.5 1.5 0 1 1-2-1.415V2.5a.5.5 0 0 1 1 0v8.585a1.5 1.5 0 0 1 1 1.415z' />
-                  <path d='M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0V2.5zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1z' />
-                </svg>
-                <span className="text-base xl:text-lg">{`H: ${Math.round(currentWeather?.main.temp_max)}`}</span>
-                &deg;
-              </div>
+            {
+              isACityFound &&
+              <motion.div className="bg-blue-500/80 backdrop-blur-sm rounded-xl w-full h-fit p-2 grid grid-cols-1 xl:grid-cols-3 py-4 text-white mb-3"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}>
+                {/* MAX TEMPERATURE */}
+                <div>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    width='16'
+                    height='16'
+                    fill='currentColor'
+                    className='bi bi-thermometer-high inline-block'
+                    viewBox='0 0 16 16'
+                  >
+                    <path d='M9.5 12.5a1.5 1.5 0 1 1-2-1.415V2.5a.5.5 0 0 1 1 0v8.585a1.5 1.5 0 0 1 1 1.415z' />
+                    <path d='M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0V2.5zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1z' />
+                  </svg>
+                  <span className="text-base xl:text-lg">{`H: ${Math.round(currentWeather?.main.temp_max)}`}</span>
+                  &deg;
+                </div>
 
-              {/* MIN TEMPERATURE */}
-              <div>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='16'
-                  height='16'
-                  fill='currentColor'
-                  className='bi bi-thermometer-low inline-block'
-                  viewBox='0 0 16 16'
-                >
-                  <path d='M9.5 12.5a1.5 1.5 0 1 1-2-1.415V9.5a.5.5 0 0 1 1 0v1.585a1.5 1.5 0 0 1 1 1.415z' />
-                  <path d='M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0V2.5zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1z' />
-                </svg>
-                <span className="text-base xl:text-lg">{`L: ${Math.round(currentWeather?.main.temp_min)}`}</span>
-                &deg;
-              </div>
+                {/* MIN TEMPERATURE */}
+                <div>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    width='16'
+                    height='16'
+                    fill='currentColor'
+                    className='bi bi-thermometer-low inline-block'
+                    viewBox='0 0 16 16'
+                  >
+                    <path d='M9.5 12.5a1.5 1.5 0 1 1-2-1.415V9.5a.5.5 0 0 1 1 0v1.585a1.5 1.5 0 0 1 1 1.415z' />
+                    <path d='M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0V2.5zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1z' />
+                  </svg>
+                  <span className="text-base xl:text-lg">{`L: ${Math.round(currentWeather?.main.temp_min)}`}</span>
+                  &deg;
+                </div>
 
-              {/* FEELS LIKE */}
-              <h5 className="text-lg xl:text-xl">
-                {`Feels like ${Math.round(currentWeather?.main?.feels_like)}`}&deg;
-              </h5>
-            </motion.div>
+                {/* FEELS LIKE */}
+                <h5 className="text-lg xl:text-xl">
+                  {`Feels like ${Math.round(currentWeather?.main?.feels_like)}`}&deg;
+                </h5>
+              </motion.div>
+            }
             <div className="grid grid-cols-2 gap-2 h-[10rem] mb-3">
-              <motion.div className="bg-blue-500/80 backdrop-blur-sm rounded-xl w-full"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                {
-                  currentWeather?.sys?.sunrise ? (
-                    <div className="px-2 w-full h-full overflow-hidden">
-                      <div className="relative w-full h-full">
-                        <div className="absolute left-0 top-0 p-1">
-                          <div className="text-2xl text-end lg:text-start"><span className="font-semibold text-white/60">Sun rises</span> <span className="text-2xl text-white/80 ">{getTime(currentWeather?.sys.sunrise)}</span></div>
+              {
+                isACityFound &&
+                <motion.div className="bg-blue-500/80 backdrop-blur-sm rounded-xl w-full"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {
+                    currentWeather?.sys?.sunrise ? (
+                      <div className="px-2 w-full h-full overflow-hidden">
+                        <div className="relative w-full h-full">
+                          <div className="absolute left-0 top-0 p-1">
+                            <div className="text-2xl text-end lg:text-start"><span className="font-semibold text-white/60">Sun rises</span> <span className="text-2xl text-white/80 ">{getTime(currentWeather?.sys.sunrise)}</span></div>
+                          </div>
+                          <div className="absolute left-0 top-2/3 w-full border"></div>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="absolute top-[1rem] -left-1/2 xl:-left-[20%] xl:right-0 z-0 opacity-60">
+                            <path d="M 260 110 Q 187.5 6, 125 93 T 6 80" stroke="#eee" strokeWidth="3" strokeLinecap="round"
+                              fill="transparent" />
+                          </svg>
+                          <motion.div
+                            className="absolute top-[1rem] -left-1/2 xl:-left-[20%]"
+                            style={{
+                              zIndex: 50,
+                              offsetPath: 'path("M 260 110 Q 187.5 6, 125 93 T 6 80")',
+                            }}
+                            initial={{
+                              offsetDistance: '65%',
+                            }}
+                            animate={{
+                              offsetDistance: '0%',
+                            }}
+                            transition={{
+                              delay: 3,
+                              duration: 120,
+                              repeat: Infinity,
+                            }}
+                          >
+                            <TheSun />
+                          </motion.div>
                         </div>
-                        <div className="absolute left-0 top-2/3 w-full border"></div>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="absolute top-[1rem] -left-1/2 xl:-left-[20%] xl:right-0 z-0 opacity-60">
-                          <path d="M 260 110 Q 187.5 6, 125 93 T 6 80" stroke="#eee" strokeWidth="3" strokeLinecap="round"
-                            fill="transparent" />
-                        </svg>
-                        <motion.div
-                          className="absolute top-[1rem] -left-1/2 xl:-left-[20%]"
-                          style={{
-                            zIndex: 50,
-                            offsetPath: 'path("M 260 110 Q 187.5 6, 125 93 T 6 80")',
-                          }}
-                          initial={{
-                            offsetDistance: '65%',
-                          }}
-                          animate={{
-                            offsetDistance: '0%',
-                          }}
-                          transition={{
-                            delay: 3,
-                            duration: 120,
-                            repeat: Infinity,
-                          }}
-                        >
-                          <TheSun />
-                        </motion.div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="bg-gray-50 animate-pulse w-full h-full"></div>
-                  )
-                }
-              </motion.div>
-              <motion.div className="bg-blue-500/80 backdrop-blur-sm rounded-xl w-full h-full"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                {
-                  currentWeather?.sys?.sunset ? (
-                    <div className="px-2 w-full h-full overflow-hidden">
-                      <div className="relative w-full h-full">
-                        <div className="absolute left-0 top-0 p-1">
-                          <div className="text-2xl text-end lg:text-start"><span className="font-semibold text-white/60">Sun sets</span> <span className="text-2xl text-white/80 ">{getTime(currentWeather?.sys.sunset)}</span></div>
+                    ) : (
+                      <div className="bg-gray-50 animate-pulse w-full h-full"></div>
+                    )
+                  }
+                </motion.div>
+              }
+              {
+                isACityFound &&
+                <motion.div className="bg-blue-500/80 backdrop-blur-sm rounded-xl w-full h-full"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {
+                    currentWeather?.sys?.sunset ? (
+                      <div className="px-2 w-full h-full overflow-hidden">
+                        <div className="relative w-full h-full">
+                          <div className="absolute left-0 top-0 p-1">
+                            <div className="text-2xl text-end lg:text-start"><span className="font-semibold text-white/60">Sun sets</span> <span className="text-2xl text-white/80 ">{getTime(currentWeather?.sys.sunset)}</span></div>
+                          </div>
+                          <div className="absolute left-0 top-2/3 w-full border"></div>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="absolute top-[2rem] -left-1/2 xl:-left-[20%] xl:right-0 z-0 opacity-60">
+                            <path d="M 6 90 Q 58.5 6, 135 75 T 270 60" stroke="#eee" strokeWidth="3" strokeLinecap="round" fill="transparent" />
+                          </svg>
+                          <motion.div
+                            className="absolute top-[2rem] -left-1/2 xl:-left-[20%] z-50"
+                            style={{
+                              zIndex: 50,
+                              offsetPath: 'path("M 6 90 Q 58.5 6, 135 75 T 270 60")',
+                            }}
+                            initial={{
+                              offsetDistance: '35%',
+                            }}
+                            animate={{
+                              offsetDistance: '100%',
+                            }}
+                            transition={{
+                              delay: 3,
+                              duration: 120,
+                              repeat: Infinity,
+                            }}
+                          >
+                            <TheMoon />
+                          </motion.div>
                         </div>
-                        <div className="absolute left-0 top-2/3 w-full border"></div>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="absolute top-[2rem] -left-1/2 xl:-left-[20%] xl:right-0 z-0 opacity-60">
-                          <path d="M 6 90 Q 58.5 6, 135 75 T 270 60" stroke="#eee" strokeWidth="3" strokeLinecap="round" fill="transparent" />
-                        </svg>
-                        <motion.div
-                          className="absolute top-[2rem] -left-1/2 xl:-left-[20%] z-50"
-                          style={{
-                            zIndex: 50,
-                            offsetPath: 'path("M 6 90 Q 58.5 6, 135 75 T 270 60")',
-                          }}
-                          initial={{
-                            offsetDistance: '35%',
-                          }}
-                          animate={{
-                            offsetDistance: '100%',
-                          }}
-                          transition={{
-                            delay: 3,
-                            duration: 120,
-                            repeat: Infinity,
-                          }}
-                        >
-                          <TheMoon />
-                        </motion.div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="bg-gray-50 animate-pulse w-full h-full"></div>
-                  )
-                }
-              </motion.div>
+                    ) : (
+                      <div className="bg-gray-50 animate-pulse w-full h-full"></div>
+                    )
+                  }
+                </motion.div>
+              }
             </div>
-            <WindSpeedPanel
-              width={width}
-              height={height}
-            />
+            {
+              isACityFound &&
+              <WindSpeedPanel
+                width={width}
+                height={height}
+              />
+            }
           </div>
           <div>
             <DailyForecast

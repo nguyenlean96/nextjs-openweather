@@ -65,6 +65,10 @@ export const WeatherContext = createContext(
 		setIsForecastLoading: any;
 		isFogEffectForcedOn: boolean;
 		setIsFogEffectForcedOn: any;
+		isSunFlareEffectForcedOn: boolean;
+		setIsSunFlareEffectForcedOn: any;
+		isRainEffectForcedOn: boolean;
+		setIsRainEffectForcedOn: any;
 		currentWeather: any;
 		setCurrentWeather: any;
 		// forecastData: any;
@@ -108,13 +112,6 @@ export default function WeatherProvider({ children }: { children: any }) {
 	const [isForecastLoading, setIsForecastLoading] = useState(true);
 	const [isACityFound, setIsACityFound] = useState(false);
 	const [currentWeather, setCurrentWeather] = useState<any>(null);
-	const [forecastData, setForecastData] = useState<{
-		list: Array<IForecastDateTime>;
-		message?: number;
-		cnt?: number;
-		cod?: string;
-		city?: any;
-	} | null>(null);
 	const [dailyForecastData, setDailyForecastData] = useState<{
 		list: Array<IForecastDateTime>;
 		message?: number;
@@ -128,6 +125,8 @@ export default function WeatherProvider({ children }: { children: any }) {
 	const [cityBackgroundUrl, setCityBackgroundUrl] = useState(null);
 	const [isCityBackgroundLoading, setIsCityBackgroundLoading] = useState(false);
 	const [isFogEffectForcedOn, setIsFogEffectForcedOn] = useState<boolean>(false);
+	const [isSunFlareEffectForcedOn, setIsSunFlareEffectForcedOn] = useState<boolean>(false);
+	const [isRainEffectForcedOn, setIsRainEffectForcedOn] = useState<boolean>(false);
 	const foundEntry = samples[Math.floor(Math.random() * samples.length)];
 
 	const getCityBackground = async () => {
@@ -315,6 +314,10 @@ export default function WeatherProvider({ children }: { children: any }) {
 				setIsCityBackgroundLoading,
 				isFogEffectForcedOn,
 				setIsFogEffectForcedOn,
+				isSunFlareEffectForcedOn,
+				setIsSunFlareEffectForcedOn,
+				isRainEffectForcedOn,
+				setIsRainEffectForcedOn,
 				currentWeather,
 				setCurrentWeather,
 				dailyForecastData,

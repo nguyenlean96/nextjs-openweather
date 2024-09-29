@@ -33,6 +33,10 @@ export default function DebugPanel({
     setIsCityBackgroundLoading,
     isFogEffectForcedOn,
     setIsFogEffectForcedOn,
+    isSunFlareEffectForcedOn,
+    setIsSunFlareEffectForcedOn,
+    isRainEffectForcedOn,
+    setIsRainEffectForcedOn,
     currentWeather,
     setCurrentWeather,
     dailyForecastData,
@@ -122,9 +126,21 @@ export default function DebugPanel({
                     <div>{'Forecast Loading: ' + isForecastLoading}</div>
                     <Input.Toggler value={isForecastLoading} onClick={() => setIsForecastLoading(!isForecastLoading)} />
                   </li>
-                  <li className='flex justify-between items-center p-2 border-b'>
+                  <li className='flex justify-between items-center p-2'>
                     <div>{'City Background Loading: ' + isCityBackgroundLoading}</div>
                     <Input.Toggler value={isCityBackgroundLoading} onClick={() => setIsCityBackgroundLoading(!isCityBackgroundLoading)} />
+                  </li>
+                </ul>
+              </Utils.Accordion>
+              <Utils.Accordion title={'Weather Effects'}>
+                <ul>
+                  <li className='flex justify-between items-center p-2 border-b'>
+                    <div>{'Force Sun Flare Effect On: ' + isSunFlareEffectForcedOn}</div>
+                    <Input.Toggler value={isSunFlareEffectForcedOn} onClick={() => setIsSunFlareEffectForcedOn(!isSunFlareEffectForcedOn)} />
+                  </li>
+                  <li className='flex justify-between items-center p-2 border-b'>
+                    <div>{'Force Rain Effect On: ' + isRainEffectForcedOn}</div>
+                    <Input.Toggler value={isRainEffectForcedOn} onClick={() => setIsRainEffectForcedOn(!isRainEffectForcedOn)} />
                   </li>
                   <li className='flex justify-between items-center p-2'>
                     <div>{'Force Fog Effect On: ' + isFogEffectForcedOn}</div>
