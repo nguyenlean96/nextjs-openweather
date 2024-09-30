@@ -7,18 +7,19 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 Now weather comes with its effect whether
 
 ## It's a sunny day
-<img width="2560" alt="Screenshot 2024-09-28 at 8 47 18 PM" src="https://github.com/user-attachments/assets/3c0597f3-db3b-46ac-89b2-e5ccf2496214">
+<img width="1969" alt="sun-flare-effect-01" src="https://github.com/user-attachments/assets/52e37e43-b6a8-4d2d-8204-cd0bbf2ba88f">
 
 ## a rainy day
-<img width="2558" alt="Screenshot 2024-09-28 at 8 46 50 PM" src="https://github.com/user-attachments/assets/e23e9767-1423-4587-a43a-8dd4e7c78266">
+<img width="1948" alt="rain-effect-01" src="https://github.com/user-attachments/assets/cdcddc71-0c41-4edc-8595-86d5526c12d5">
+
 
 ## or even a foggy one
-<img width="2560" alt="Screenshot 2024-09-28 at 8 44 59 PM" src="https://github.com/user-attachments/assets/d14c7c31-4f44-4509-88a5-a1f37e718f7c">
+<img width="1962" alt="fog-effect-01" src="https://github.com/user-attachments/assets/29a01939-3646-4f82-8735-bcb8c959ce69">
+
 
 # There is a debugging panel
 For... debugging purposes
-
-<img width="1316" alt="Screenshot 2024-09-28 at 9 00 17 PM" src="https://github.com/user-attachments/assets/d86bf509-f0b3-42f7-bb09-95aa922064ba">
+<img width="1375" alt="debug-panel-01" src="https://github.com/user-attachments/assets/e29bac87-1dac-49ae-9133-f164fd1c7ee6">
 
 ### All effects can be toggled via this panel
 So there can be all sunny, rainy, and foggy all at once.
