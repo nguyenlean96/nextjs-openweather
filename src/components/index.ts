@@ -1,5 +1,6 @@
 import Main from './main';
 import SearchPanel from './search-panel';
+import CurrentWeather from './current-weather';
 import { HourlyForecast, DailyForecast } from './weather-forecast';
 import WindSpeedPanel from './wind-speed';
 import DebugPanel from './debug-panel';
@@ -24,6 +25,7 @@ const Effects = {
 export {
   Main,
   SearchPanel,
+  CurrentWeather,
   HourlyForecast,
   DailyForecast,
   WindSpeedPanel,
