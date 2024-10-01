@@ -13,6 +13,7 @@
       hsl(4 0% 10% / 5%) 75%,
       transparent 99%);
   filter: blur(4px);
+  animation: light_source 100s ease-in-out infinite;
 }
 
 .lens-center::before {
@@ -56,6 +57,7 @@
       transparent 70%);
   filter: blur(27px);
   opacity: 0.8;
+  animation: circle_effect 60s ease-in-out infinite;
 }
 
 .circle-3 {
@@ -68,6 +70,7 @@
   background: radial-gradient(closest-side circle at center, transparent 60%, hsl(240, 100%, 50%) 0%, transparent 70%);
   filter: blur(18px);
   opacity: 0.7;
+  animation: circle_effect 30s ease-in-out infinite;
 }
 
 .circle-2 {
@@ -79,4 +82,34 @@
   position: absolute;
   background: hsl(4 10% 60% / 40%);
   filter: blur(2px);
+  animation: circle_effect 20s ease-in-out infinite;
+}
+
+@keyframes light_source {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes circle_effect {
+  0% {
+    transform: translateX(calc(40vmin * 0.1)) translateY(calc(40vmin * 0.1));
+
+  }
+
+  50% {
+    transform: translateX(calc(40vmin * 0.2)) translateY(calc(40vmin * 0.2));
+  }
+
+  100% {
+    transform: translateX(calc(40vmin * 0.1)) translateY(calc(40vmin * 0.1));
+  }
 }
