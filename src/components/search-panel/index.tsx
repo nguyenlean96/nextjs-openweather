@@ -104,7 +104,7 @@ export default function SearchPanel({ width, height }: { width: number; height: 
   }, [city]);
   return (
     <div
-      className={`${geistSans.variable} ${geistMono.variable} font-[family-name:var(--font-geist-sans)] lg:grid lg:grid-cols-1`}
+      className={`${geistSans.variable} ${geistMono.variable} font-[family-name:var(--font-geist-sans)] lg:grid lg:grid-cols-1 z-50`}
     >
       <div className="bg-gradient-to-br from-slate-500 to-blue-500 w-full h-screen max-h-screen overflow-hidden col-span-1 p-2 flex flex-col">
         <div className="w-full flex items-center sticky top-0 px-2 py-3 rounded">
