@@ -93,9 +93,7 @@ export default function Main({ width, height, props }: { width: number; height: 
       {
         currentWeather && (String(currentWeather?.weather[0].icon).includes('50') || isFogEffectForcedOn)
         &&
-        <div className="fog z-30">
           <Effects.FogBackgroundEffect />
-        </div>
       }
       <div className={"absolute top-0 left-0 right-0 w-full h-screen overflow-y-scroll z-20 p-2 px-10 pt-16 " + ((String(currentWeather?.weather[0].icon).includes('50') || isFogEffectForcedOn) ? 'pb-64' : '')}>
         <CurrentWeather />

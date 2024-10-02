@@ -7,7 +7,7 @@ import Fog5 from '../graphic/fog5.png';
 
 export default function FogBackgroundEffect() {
   return (
-    <>
+    <div className="fog z-30">
       <Image src={Fog1} alt="fog" className="fog1" />
       <Image src={Fog2} alt="fog" className="fog2" />
       <Image src={Fog3} alt="fog" className="fog3" />
@@ -18,6 +18,6 @@ export default function FogBackgroundEffect() {
       <Image src={Fog3} alt="fog" className="fog8" />
       <Image src={Fog4} alt="fog" className="fog7" />
       <Image src={Fog5} alt="fog" className="fog6" />
-    </>
+    </div>
   )
 }
