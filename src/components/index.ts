@@ -4,6 +4,8 @@ import CurrentWeather from './current-weather';
 import { HourlyForecast, DailyForecast } from './weather-forecast';
 import WindSpeedPanel from './wind-speed';
 import DebugPanel from './debug-panel';
+import SunRise from './sun-rise';
+import SunSet from './sunset';
 
 import { Accordion } from './accordion';
 const Utils = {
@@ -29,6 +31,8 @@ export {
   HourlyForecast,
   DailyForecast,
   WindSpeedPanel,
+  SunRise,
+  SunSet,
   DebugPanel,
   Utils,
   Input,

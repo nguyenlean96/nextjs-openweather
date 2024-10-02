@@ -1,8 +1,6 @@
 import { useWeatherContext } from "@/context/WeatherDataProvider";
 import { motion } from "framer-motion";
-import { getTime } from "@/util";
-import { WindSpeedPanel, CurrentWeather, DailyForecast, HourlyForecast, Effects } from "@/components";
-import { TheSun, TheMoon } from "@/components/celestial";
+import { WindSpeedPanel, CurrentWeather, DailyForecast, HourlyForecast, Effects, SunRise, SunSet } from "@/components";
 
 export default function Main({ width, height, props }: { width: number; height: number; props?: any }) {
   const {
@@ -204,97 +202,10 @@ export default function Main({ width, height, props }: { width: number; height: 
             }
             <div className="grid grid-cols-2 gap-2 h-[10rem] mb-3">
               {
-                isACityFound &&
-                <motion.div className="bg-blue-500/80 backdrop-blur-sm rounded-xl w-full"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {
-                    currentWeather?.sys?.sunrise ? (
-                      <div className="px-2 w-full h-full overflow-hidden">
-                        <div className="relative w-full h-full">
-                          <div className="absolute left-0 top-0 p-1">
-                            <div className="text-2xl text-end lg:text-start"><span className="font-semibold text-white/60">Sun rises</span> <span className="text-2xl text-white/80 ">{getTime(currentWeather?.sys.sunrise)}</span></div>
-                          </div>
-                          <div className="absolute left-0 top-2/3 w-full border"></div>
-                          <svg xmlns="http://www.w3.org/2000/svg" className="absolute top-[1rem] -left-1/2 xl:-left-[20%] xl:right-0 z-0 opacity-60">
-                            <path d="M 260 110 Q 187.5 6, 125 93 T 6 80" stroke="#eee" strokeWidth="3" strokeLinecap="round"
-                              fill="transparent" />
-                          </svg>
-                          <motion.div
-                            className="absolute top-[1rem] -left-1/2 xl:-left-[20%]"
-                            style={{
-                              zIndex: 50,
-                              offsetPath: 'path("M 260 110 Q 187.5 6, 125 93 T 6 80")',
-                            }}
-                            initial={{
-                              offsetDistance: '65%',
-                            }}
-                            animate={{
-                              offsetDistance: '0%',
-                            }}
-                            transition={{
-                              delay: 3,
-                              duration: 120,
-                              repeat: Infinity,
-                            }}
-                          >
-                            <TheSun />
-                          </motion.div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="bg-gray-50 animate-pulse w-full h-full"></div>
-                    )
-                  }
-                </motion.div>
+                isACityFound && <SunRise />
               }
               {
-                isACityFound &&
-                <motion.div className="bg-blue-500/80 backdrop-blur-sm rounded-xl w-full h-full"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {
-                    currentWeather?.sys?.sunset ? (
-                      <div className="px-2 w-full h-full overflow-hidden">
-                        <div className="relative w-full h-full">
-                          <div className="absolute left-0 top-0 p-1">
-                            <div className="text-2xl text-end lg:text-start"><span className="font-semibold text-white/60">Sun sets</span> <span className="text-2xl text-white/80 ">{getTime(currentWeather?.sys.sunset)}</span></div>
-                          </div>
-                          <div className="absolute left-0 top-2/3 w-full border"></div>
-                          <svg xmlns="http://www.w3.org/2000/svg" className="absolute top-[2rem] -left-1/2 xl:-left-[20%] xl:right-0 z-0 opacity-60">
-                            <path d="M 6 90 Q 58.5 6, 135 75 T 270 60" stroke="#eee" strokeWidth="3" strokeLinecap="round" fill="transparent" />
-                          </svg>
-                          <motion.div
-                            className="absolute top-[2rem] -left-1/2 xl:-left-[20%] z-50"
-                            style={{
-                              zIndex: 50,
-                              offsetPath: 'path("M 6 90 Q 58.5 6, 135 75 T 270 60")',
-                            }}
-                            initial={{
-                              offsetDistance: '35%',
-                            }}
-                            animate={{
-                              offsetDistance: '100%',
-                            }}
-                            transition={{
-                              delay: 3,
-                              duration: 120,
-                              repeat: Infinity,
-                            }}
-                          >
-                            <TheMoon />
-                          </motion.div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="bg-gray-50 animate-pulse w-full h-full"></div>
-                    )
-                  }
-                </motion.div>
+                isACityFound && <SunSet />
               }
             </div>
             {
