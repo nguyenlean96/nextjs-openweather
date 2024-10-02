@@ -124,21 +124,21 @@ const ForecastDayDisplay = (props: any) => {
   }, [day.main.temp, day.main.temp_max, tempRangeBar.current, tempIndicator.current]);
 
   return (
-    <div className='grid grid-cols-11 w-full pr-4'>
+    <div className='grid grid-cols-10 w-full pr-4'>
       <div className='text-gray-50 col-span-2'>
-        <div className={'text-base ' + (position === 0 ? 'font-semibold' : '')}>{getDayOfWeek(day.dt)}</div>
+        <div className={'px-2 text-base ' + (position === 0 ? 'font-semibold' : '')}>{getDayOfWeek(day.dt)}</div>
       </div>
-      <div className='col-span-2 flex items-center justify-center'>
+      <div className='flex items-center justify-center'>
         {
           day?.weather[0]?.icon && (
-            <img className='-translate-y-2 w-4/5' src={`http://openweathermap.org/img/wn/${day?.weather[0]?.icon}.png`} alt={day?.weather[0]?.description} />
+            <img className='-translate-y-2' src={`http://openweathermap.org/img/wn/${day?.weather[0]?.icon}.png`} alt={day?.weather[0]?.description} />
           )
         }
       </div>
       <div className='col-span-7'>
         <div className='hidden bg-gradient-to-r from-blue-600 via-green-500 to-orange-600 w-full h-2 rounded ring-1 ring-white'></div>
         <div className='grid grid-cols-12 w-full gap-x-2'>
-          <div className='text-blue-200 text-base xl:text-lg text-center font-semibold'>
+          <div className='text-blue-100 text-base xl:text-lg text-center font-semibold'>
             {Math.floor(day.main.temp_min)}
             &deg;
           </div>
@@ -163,7 +163,7 @@ const ForecastDayDisplay = (props: any) => {
               )}
             </div>
           </div>
-          <div className='text-white text-base xl:text-lg text-start font-semibold'>
+          <div className='text-orange-100 text-base xl:text-lg text-start font-semibold'>
             {Math.round(day.main.temp_max)}
             &deg;
           </div>
