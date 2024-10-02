@@ -104,8 +104,8 @@ export default function SearchPanel({ width, height }: { width: number; height: 
   }, [city]);
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} font-[family-name:var(--font-geist-sans)] md:grid md:grid-cols-1`}>
-      <div className="bg-transparent md:bg-gradient-to-br from-slate-500 to-blue-500 w-full md:h-screen md:max-h-screen overflow-hidden col-span-1 p-2 flex flex-col">
-        <div className="w-full flex items-center sticky top-0 px-2 md:py-3 rounded z-20">
+      <div className="bg-transparent md:bg-gradient-to-br from-slate-500 to-blue-500 w-full md:h-screen md:max-h-screen md:overflow-hidden col-span-1 p-2 flex flex-col overflow-visible">
+        <div className="w-full flex items-center sticky ring-1 md:ring-0 ring-black/10 rounded-full shadow-lg md:shadow-sm top-0 p-0 md:px-2 md:py-3 z-20">
           <input title="City" type="text" ref={cityInput} placeholder="Enter a city" className="rounded-l-full w-full leading-5 px-3 p-1.5 dark:text-gray-600" value={typingCity}
             onChange={(e) => {
               e.preventDefault();

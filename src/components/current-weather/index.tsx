@@ -27,7 +27,7 @@ export default function CurrentWeather() {
 
       {
         isACityFound &&
-        <div className="p-3 rounded-lg bg-gradient-to-r from-gray-50/40 via-gray-100/60 to-gray-200 backdrop-blur-sm mb-3 grid grid-cols-1 xl:grid-cols-2">
+        <div className="p-3 rounded-lg bg-gradient-to-r from-gray-50/20 md:from-gray-50/40 via-gray-100/40 md:via-gray-100/60 to-gray-200/50 md:to-gray-200 backdrop-blur-sm mb-3 grid grid-cols-1 xl:grid-cols-2">
           <div className="p-6">
             {/* CURRENT TEMPERATURE */}
             <h3 className="text-center xl:text-start text-5xl xl:text-7xl py-6 text-gray-600">{Math.round(currentWeather?.main.temp)}&deg;</h3>
