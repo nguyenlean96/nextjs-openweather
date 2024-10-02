@@ -63,13 +63,13 @@ export default function DebugPanel({
   };
 
   return (
-    <div className='fixed bottom-0 md:top-0 right-0 z-30'
+    <div className='fixed top-0 right-0 z-40'
       style={{
         width: debugButtonRef.current ? debugButtonRef.current?.offsetWidth : 0,
       }}
     >
       <div className='relative'>
-        <div className='absolute md:top-4 bottom-0 right-0 select-none'>
+        <div className='absolute top-4 right-0 select-none'>
           <button type='button' ref={debugButtonRef}
             className='text-white bg-blue-500 text-sm rounded-tl-lg p-1 px-4 w-[12rem] -rotate-90 translate-y-[4rem] translate-x-[5rem] hover:bg-blue-600 transition-all ease-in-out'
             onClick={() => setIsOpen(!isOpen)}
