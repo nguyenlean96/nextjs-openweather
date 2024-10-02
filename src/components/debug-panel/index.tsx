@@ -72,7 +72,7 @@ export default function DebugPanel({
             className='text-white bg-blue-500 text-sm rounded-tl-lg p-1 px-4 w-[12rem] -rotate-90 translate-y-[4rem] translate-x-[5rem] hover:bg-blue-600 transition-all ease-in-out'
             onClick={() => setIsOpen(!isOpen)}
           >
-            Open Debug Panel
+            Open Control Panel
           </button>
         </div>
         <div className={'absolute top-0 right-0 h-screen p-3 transition-all ease-in-out bg-white rounded-l-xl shadow-lg dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 w-96 ' + (isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0')}>
