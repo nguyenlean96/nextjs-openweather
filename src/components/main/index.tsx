@@ -158,7 +158,7 @@ export default function Main({ width, height, props }: { width: number; height: 
           <div>
             {
               isACityFound &&
-              <motion.div className="bg-blue-500/80 backdrop-blur-sm rounded-xl w-full h-fit p-2 grid grid-cols-1 xl:grid-cols-3 py-4 text-white mb-3"
+              <motion.div className="bg-blue-500/80 backdrop-blur-sm rounded-xl w-full h-fit p-2 grid grid-cols-3 py-4 text-white mb-3"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}>

@@ -63,13 +63,13 @@ export default function DebugPanel({
   };
 
   return (
-    <div className='fixed top-0 right-0 z-50'
+    <div className='fixed bottom-0 md:top-0 right-0 z-30'
       style={{
         width: debugButtonRef.current ? debugButtonRef.current?.offsetWidth : 0,
       }}
     >
       <div className='relative'>
-        <div className='absolute top-4 right-0'>
+        <div className='absolute md:top-4 bottom-0 right-0 select-none'>
           <button type='button' ref={debugButtonRef}
             className='text-white bg-blue-500 text-sm rounded-tl-lg p-1 px-4 w-[12rem] -rotate-90 translate-y-[4rem] translate-x-[5rem] hover:bg-blue-600 transition-all ease-in-out'
             onClick={() => setIsOpen(!isOpen)}
@@ -77,7 +77,7 @@ export default function DebugPanel({
             Open Control Panel
           </button>
         </div>
-        <div className={'absolute top-0 right-0 h-screen p-3 transition-all ease-in-out bg-white rounded-l-xl shadow-lg dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 w-96 ' + (isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0')}>
+        <div className={'absolute top-0 right-0 h-screen p-3 transition-all ease-in-out bg-white rounded-l-xl shadow-lg dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 w-80 lg:w-96 ' + (isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0')}>
           <div className='relative w-full h-full flex flex-col text-sm'>
             <div className='w-full bg-white p-1 border-b mb-3'>
               <div className='w-4 h-4 cursor-pointer z-10'
@@ -94,8 +94,8 @@ export default function DebugPanel({
                 position={'first'}
               >
                 <ul>
-                  <li className='flex items-center justify-between gap-2 border-b p-2'>
-                    <input title='City' className='p-0.5 px-1.5 text-gray-800 border border-gray-200 rounded-lg'
+                  <li className='w-full border-b p-2'>
+                    <input title='City' className='p-0.5 px-1.5 text-gray-800 border border-gray-200 rounded-lg mb-2'
                       type='text' value={city} onChange={(e) => setCity(e.target.value)} />
                     <button type='button' onClick={() => getData()}
                       className='p-1 px-2 text-white bg-blue-500 text-sm rounded'

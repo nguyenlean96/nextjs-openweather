@@ -5,12 +5,14 @@ export default function Home({ width, height, props }: { width: number; height: 
   return (
     <WeatherProvider>
       <div className="relative w-screen h-screen overflow-hidden">
-        <div className="grid grid-cols-4">
-          <SearchPanel
-            width={width}
-            height={height}
-          />
-          <div className="col-span-3">
+        <div className="flex flex-col relative md:grid md:grid-cols-5 lg:grid-cols-4">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 right-0 z-40 md:relative md:z-0 md:col-span-2 lg:col-span-1 md:h-full">
+            <SearchPanel
+              width={width}
+              height={height}
+            />
+          </div>
+          <div className="md:col-span-3">
             <Main
               width={width}
               height={height}
