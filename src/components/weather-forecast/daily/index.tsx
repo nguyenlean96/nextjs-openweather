@@ -126,16 +126,16 @@ const ForecastDayDisplay = (props: any) => {
   return (
     <div className='grid grid-cols-10 w-full pr-4'>
       <div className='text-gray-50 col-span-2'>
-        <div className={'px-2 text-base ' + (position === 0 ? 'font-semibold' : '')}>{getDayOfWeek(day.dt)}</div>
+        <div className={'px-2 text-base truncate text-ellipsis ' + (position === 0 ? 'font-semibold' : '')}>{getDayOfWeek(day.dt)}</div>
       </div>
-      <div className='flex items-center justify-center'>
+      <div className='flex items-center justify-center col-span-2 md:col-span-1'>
         {
           day?.weather[0]?.icon && (
             <img className='-translate-y-2' src={`http://openweathermap.org/img/wn/${day?.weather[0]?.icon}.png`} alt={day?.weather[0]?.description} />
           )
         }
       </div>
-      <div className='col-span-7'>
+      <div className='col-span-6 md:col-span-7'>
         <div className='hidden bg-gradient-to-r from-blue-600 via-green-500 to-orange-600 w-full h-2 rounded ring-1 ring-white'></div>
         <div className='grid grid-cols-12 w-full gap-x-2'>
           <div className='text-blue-100 text-base xl:text-lg text-center font-semibold'>

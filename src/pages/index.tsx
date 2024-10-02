@@ -6,13 +6,13 @@ export default function Home({ width, height, props }: { width: number; height: 
     <WeatherProvider>
       <div className="relative w-screen h-screen overflow-hidden">
         <div className="flex flex-col relative md:grid md:grid-cols-5 lg:grid-cols-4">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 right-0 z-40 md:relative md:z-0 md:col-span-2 lg:col-span-1 md:h-full">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 right-0 z-50 md:relative md:z-0 md:col-span-2 lg:col-span-1 md:h-full">
             <SearchPanel
               width={width}
               height={height}
             />
           </div>
-          <div className="md:col-span-3">
+          <div className="md:col-span-3 md:overflow-hidden">
             <Main
               width={width}
               height={height}
