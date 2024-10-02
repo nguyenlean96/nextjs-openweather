@@ -53,6 +53,8 @@ export const WeatherContext = createContext(
 		setCity: any;
 		previousCity: string;
 		setPreviousCity: any;
+		unsplashSearchTerm: string | null;
+		setUnsplashSearchTerm: any;
 		cityBackgroundUrl: string | null;
 		setCityBackgroundUrl: any;
 		isCityBackgroundLoading: boolean;
@@ -120,7 +122,8 @@ export default function WeatherProvider({ children }: { children: any }) {
 		city?: any;
 	} | null>(null);
 	const [hourlyForecastData, setHourlyForecastData] = useState<any | null>(null);
-	const [currentWeatherError, setCurrentWeatherError] = useState('');
+	const [currentWeatherError, setCurrentWeatherError] = useState<string>('');
+	const [unsplashSearchTerm, setUnsplashSearchTerm] = useState<string | null>(null);
 	const [forecastError, setForecastError] = useState('');
 	const [cityBackgroundUrl, setCityBackgroundUrl] = useState(null);
 	const [isCityBackgroundLoading, setIsCityBackgroundLoading] = useState(false);
@@ -133,7 +136,7 @@ export default function WeatherProvider({ children }: { children: any }) {
 		if (isACityFound && (city || foundEntry)) {
 			try {
 				setIsCityBackgroundLoading(true);
-				await getImage(String(city ?? foundEntry))
+				await getImage(String(unsplashSearchTerm ?? ((city ?? foundEntry) + ' city')))
 					.then((res) => {
 						if (res.results.length > 0) {
 							setCityBackgroundUrl(res?.results[0]?.urls?.full);
@@ -261,6 +264,7 @@ export default function WeatherProvider({ children }: { children: any }) {
 	}
 
 	const getData = async () => {
+		setUnsplashSearchTerm(city || foundEntry);
 		setCurrentWeather(null);
 		setDailyForecastData(null);
 		setHourlyForecastData(null);
@@ -268,7 +272,6 @@ export default function WeatherProvider({ children }: { children: any }) {
 		Promise.all([
 			getCurrentWeather(true),
 			getForecast(true),
-			getCityBackground(),
 		]).then(() => {
 			setTimeout(() => {
 				setIsCityLoading(false);
@@ -278,6 +281,11 @@ export default function WeatherProvider({ children }: { children: any }) {
 		});
 	};
 
+	useEffect(() => {
+		if (isACityFound) {
+			getCityBackground();
+		}
+	}, [isACityFound]);
 	useEffect(() => {
 		cityInitHandler();
 	}, []);
@@ -302,6 +310,8 @@ export default function WeatherProvider({ children }: { children: any }) {
 				setCity,
 				previousCity,
 				setPreviousCity,
+				unsplashSearchTerm,
+				setUnsplashSearchTerm,
 				cityBackgroundUrl,
 				setCityBackgroundUrl,
 				isACityFound,

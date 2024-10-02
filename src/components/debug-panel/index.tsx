@@ -21,6 +21,8 @@ export default function DebugPanel({
     city,
     setCity,
     previousCity,
+    unsplashSearchTerm,
+    setUnsplashSearchTerm,
     cityBackgroundUrl,
     setCityBackgroundUrl,
     isACityFound,
@@ -100,7 +102,14 @@ export default function DebugPanel({
                     >Get Data</button>
                   </li>
                   <li className='border-b p-1.5'>{'Previous City: ' + previousCity}</li>
-                  <li className='border-b'>
+                  <li className='border-b p-1.5'>
+                    <div>
+                      <div>{'Unsplash Search Term:'}</div>
+                      <input title='Unsplash Search Term' className='p-0.5 px-1.5 text-gray-800 border border-gray-200 rounded-lg w-full'
+                        type='text' value={unsplashSearchTerm ?? ''} onChange={(e) => setUnsplashSearchTerm(e.target.value)} />
+                    </div>
+                  </li>
+                  <li className='border-b p-1.5'>
                     <div>
                       <div>{'City Background Url:'}</div>
                       <div className='p-2'>
