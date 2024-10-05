@@ -264,6 +264,13 @@ export default function WeatherProvider({ children }: { children: any }) {
 	}
 
 	const getData = async () => {
+		const searchTerm = city || foundEntry;
+		// Check whether includes the word 'city' in the search term
+		if (searchTerm.includes('city')) {
+			setUnsplashSearchTerm(prev => searchTerm);
+		} else {
+			setUnsplashSearchTerm(prev => searchTerm + ' city');
+		}
 		setUnsplashSearchTerm(city || foundEntry);
 		setCurrentWeather(null);
 		setDailyForecastData(null);
